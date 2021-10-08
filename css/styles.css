@@ -896,21 +896,30 @@ h1.page-header {
 .easypiechart .percent {
   display: block;
   position: absolute;
-  font-size: 26px;
+  font-size: 50px;
   top: 38px;
   width: 120px; }
 
 #easypiechart-blue .percent {
-  color: #30a5ff; }
+  color: blue; }
 
 #easypiechart-teal .percent {
-  color: #1ebfae; }
+  color: teal; }
 
 #easypiechart-orange .percent {
-  color: #ffb53e; }
+  color: orange; }
 
 #easypiechart-red .percent {
-  color: #ef4040; }
+  color: red; }
+
+#easypiechart-green .percent {
+  color: green; }
+   
+#easypiechart-black .percent {
+  color: black; }
+   
+#easypiechart-violet .percent {
+  color: violet; }
 
 #calendar, .datepicker-inline {
   width: 100%; }

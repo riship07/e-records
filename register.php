@@ -8,6 +8,9 @@ if(isset($_POST['submit']))
     $mobno=$_POST['mobilenumber'];
     $email=$_POST['email'];
     $password=$_POST['password'];
+	
+	$file = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));  
+	
 
     $ret=mysqli_query($con, "select Email from tbluser where Email='$email' ");
     $result=mysqli_fetch_array($ret);
@@ -15,9 +18,9 @@ if(isset($_POST['submit']))
 		$msg="This email  associated with another account";
     }
     else{
-    $query=mysqli_query($con, "insert into tbluser(FullName, MobileNumber, Email,  Password) value('$fname', '$mobno', '$email', '$password' )");
+     $query=mysqli_query($con, "insert into tbluser(FullName, MobileNumber, Email,  Password, Image) value('$fname', '$mobno', '$email', '$password', '$file' )");
     if ($query) {
-    $msg="You have successfully registered";
+     $msg="You have successfully registered";
   }
   else
     {
@@ -47,6 +50,22 @@ if(document.signup.password.value!=document.signup.repeatpassword.value)
 }
 return true;
 } 
+function image(){
+	var image_name = document.getElementById("image").value;
+	if(image_name == '')  
+           {  
+                alert("Please Select Image");  
+                return false;  
+           }  
+	else{
+		var extension = document.getElementById("image").value.split('.').pop().toLowerCase();
+		if(extension != 'gif' || extension != 'png' || extension != 'jpg' || extension != 'jpeg'){
+			alert('Invalid Image File');  
+            document.getElementById("image").value="";  
+            return false; 
+		}
+	}
+}
 
 </script>
 <body>
@@ -57,7 +76,7 @@ return true;
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading">Sign Up</div>
 				<div class="panel-body">
-					<form role="form" action="" method="post" id="" name="signup" onsubmit="return checkpass();">
+					<form role="form" action="" method="post" id="" name="signup" enctype="multipart/form-data" onsubmit="return checkpass();">
 						<p style="font-size:16px; color:red" align="center"> <?php if($msg){
     echo $msg;
   }  ?> </p>
@@ -77,6 +96,10 @@ return true;
 							<div class="form-group">
 								<input type="password" class="form-control" id="repeatpassword" name="repeatpassword" placeholder="Repeat Password" required="true">
 							</div>
+							<div class="form-group">
+							    <input type="file" class="form-control" name="image" id="image" placeholder="Upload Image" onchange= image()>
+							</div>
+							
 							<div class="checkbox">
 								<button type="submit" value="submit" name="submit" class="btn btn-primary">Register</button><span style="padding-left:250px">
 								<a href="index.php" class="btn btn-primary">Login</a></span>

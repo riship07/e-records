@@ -5,7 +5,18 @@ include('includes/dbconnection.php');
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
         <div class="profile-sidebar">
             <div class="profile-userpic">
-                <img src="http://placehold.it/50/30a5ff/fff" class="img-responsive" alt="">
+              <?php  
+                $uid=$_SESSION['detsuid'];
+                $query = "select image from tbluser where ID='$uid'";  
+                $result = mysqli_query($con, $query);  
+                while($row = mysqli_fetch_array($result))  
+                {    
+                           
+                    echo '<img src="data:image/jpeg;base64,'.base64_encode($row['image'] ).'" height="200" width="200" class="img-thumnail" /> ';
+                               
+                     
+                }  
+                ?> 
             </div>
             <div class="profile-usertitle">
                 <?php
@@ -14,7 +25,7 @@ include('includes/dbconnection.php');
                     $row=mysqli_fetch_array($ret);
                     $name=$row['FullName'];
 
-?>
+                ?>
 
                 <div class="profile-usertitle-name"><?php echo $name; ?></div>
                 <div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
