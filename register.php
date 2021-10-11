@@ -96,6 +96,7 @@ function image(){
 							<div class="form-group">
 								<input type="password" class="form-control" id="repeatpassword" name="repeatpassword" placeholder="Repeat Password" required="true">
 							</div>
+							<label>Upload Your Image(<60kb)</label>
 							<div class="form-group">
 							    <input type="file" class="form-control" name="image" id="image" placeholder="Upload Image" onchange= image()>
 							</div>

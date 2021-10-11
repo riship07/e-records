@@ -1,3 +1,24 @@
+<?php
+session_start();
+error_reporting(0);
+include('includes/dbconnection.php');
+error_reporting(0);
+
+if(isset($_POST['submit']))
+  {
+    $contactno=$_SESSION['contactno'];
+    $email=$_SESSION['email'];
+    $password=$_POST['newpassword'];
+
+        $query=mysqli_query($con,"update tbluser set Password='$password'  where  Email='$email' && MobileNumber='$contactno' ");
+   if($query)
+   {
+echo "<script>alert('Password successfully changed');</script>";
+session_destroy();
+   }
+  
+  }
+  ?>
 <!DOCTYPE html>
 <html>
 <head>

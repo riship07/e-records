@@ -60,7 +60,7 @@ $sum_today_expense=$result['todaysexpense'];
  ?> 
 
 						<h4>Today's Expense</h4>
-						<div class="easypiechart" id="easypiechart-red" data-percent="<?php echo $sum_today_expense;?>" ><span class="percent"><?php if($sum_today_expense==""){
+						<div class="easypiechart" id="easypiechart-red" data-percent="<?php echo $sum_today_expense;?>" ><span style= " font-size:35px " class="percent"><?php if($sum_today_expense==""){
 echo "0";
 } else {
 echo $sum_today_expense;
@@ -82,7 +82,7 @@ $sum_yesterday_expense=$result1['yesterdayexpense'];
  ?> 
 					<div class="panel-body easypiechart-panel">
 						<h4>Yesterday's Expense</h4>
-						<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_yesterday_expense;?>" ><span class="percent"><?php if($sum_yesterday_expense==""){
+						<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_yesterday_expense;?>" ><span style= " font-size:35px " class="percent"><?php if($sum_yesterday_expense==""){
 echo "0";
 } else {
 echo $sum_yesterday_expense;
@@ -105,7 +105,7 @@ $sum_weekly_expense=$result2['weeklyexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Last 7day's Expense</h4>
-						<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_weekly_expense;?>"><span class="percent"><?php if($sum_weekly_expense==""){
+						<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_weekly_expense;?>"><span style= " font-size:35px " class="percent"><?php if($sum_weekly_expense==""){
 echo "0";
 } else {
 echo $sum_weekly_expense;
@@ -128,7 +128,7 @@ $sum_monthly_expense=$result3['monthlyexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Last 30day's Expenses</h4>
-						<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_monthly_expense;?>" ><span class="percent"><?php if($sum_monthly_expense==""){
+						<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_monthly_expense;?>" ><span style= " font-size:35px " class="percent"><?php if($sum_monthly_expense==""){
 echo "0";
 } else {
 echo $sum_monthly_expense;
@@ -153,7 +153,7 @@ $sum_yearly_expense=$result4['yearlyexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Current Year Expenses</h4>
-						<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_yearly_expense;?>" ><span class="percent"><?php if($sum_yearly_expense==""){
+						<div class="easypiechart" id="easypiechart-orange" data-percent="<?php echo $sum_yearly_expense;?>" ><span style= " font-size:35px " class="percent"><?php if($sum_yearly_expense==""){
 echo "0";
 } else {
 echo $sum_yearly_expense;
@@ -179,7 +179,7 @@ $sum_total_expense=$result5['totalexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Total Expenses</h4>
-						<div class="easypiechart" id="easypiechart-red" data-percent="<?php echo $sum_total_expense;?>" ><span class="percent"><?php if($sum_total_expense==""){
+						<div class="easypiechart" id="easypiechart-red" data-percent="<?php echo $sum_total_expense;?>" ><span style= " font-size:35px " class="percent"><?php if($sum_total_expense==""){
 echo "0";
 } else {
 echo $sum_total_expense;
@@ -204,7 +204,7 @@ $sum_total_income=$result6['totalincome'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Total Income</h4>
-						<div class="easypiechart" id="easypiechart-teal" data-percent="<?php echo $sum_total_income;?>" ><span class="percent"><?php if($sum_total_income==""){
+						<div class="easypiechart" id="easypiechart-teal" data-percent="<?php echo $sum_total_income;?>" ><span style= " font-size:35px " class="percent"><?php if($sum_total_income==""){
 echo "0";
 } else {
 echo $sum_total_income;
@@ -225,8 +225,8 @@ echo $sum_total_income;
 
                     ?>
 					<div class="panel-body easypiechart-panel">
-						<h4>Balance</h4>
-						<div class="easypiechart" id="easypiechart-black" data-percent="<?php echo $balance;?>" ><span class="percent"><?php if($balance==""){
+						<h4><u><mark><b>Balance</b></mark></u></h4>
+						<div class="easypiechart" id="easypiechart-black" data-percent="<?php echo $balance;?>" ><span style= " font-size:38px " class="percent"><?php if($balance==""){
 echo "0";
 } else {
 	?>
@@ -255,17 +255,7 @@ echo "0";
 	<script src="js/easypiechart-data.js"></script>
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script src="js/custom.js"></script>
-	<script>
-		window.onload = function () {
-	var chart1 = document.getElementById("line-chart").getContext("2d");
-	window.myLine = new Chart(chart1).Line(lineChartData, {
-	responsive: true,
-	scaleLineColor: "rgba(0,0,0,.2)",
-	scaleGridLineColor: "rgba(0,0,0,.05)",
-	scaleFontColor: "#c5c7cc"
-	});
-};
-	</script>
+	
 		
 </body>
 </html>
