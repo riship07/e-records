@@ -1,3 +1,71 @@
+<?php
+  session_start();
+  error_reporting(0);
+  include('includes/dbconnection.php');
+  include_once('fpdf/fpdf.php');
+  if (strlen($_SESSION['detsuid'])==0) {
+	header('location:logout.php');
+	}else{
+		if(isset($_POST['gett'])){
+							
+			 
+			class PDF extends FPDF
+			{
+			
+			function Header()
+			{
+				
+				
+				$this->SetFont('Arial','B',13);
+				
+				$this->Cell(80);
+			
+				$this->Cell(80,10,'Report',1,0,'C');
+			
+				$this->Ln(20);
+			}
+			 
+		
+			function Footer()
+			{
+				
+				$this->SetY(-15);
+				
+				$this->SetFont('Arial','I',8);
+			
+				$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+			}
+			}
+			$fdate=$_POST['fromdate'];
+			$tdate=$_POST['todate'];
+			$rtype=$_POST['requesttype']; 
+			
+			$display_heading = array('ID'=>'ID', 'ExpenseDate'=> 'Date', 'ExpenseType'=> 'Type','ExpenseCost'=> 'Cost',);
+			$userid=$_SESSION['detsuid'];
+			$result=mysqli_query($con,"SELECT ExpenseDate,SUM(ExpenseCost) as totaldaily FROM `tblexpense`  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by ExpenseDate");
+			$header = mysqli_query($con, "SHOW columns FROM tblexpense");
+			 
+			$pdf = new PDF();
+		
+			$pdf->AddPage();
+		
+			$pdf->AliasNbPages();
+			$pdf->SetFont('Arial','B',12);
+			foreach($header as $heading) {
+			 $pdf->Cell(40,12,$display_heading[$heading['Field']],0);
+			}
+			$rr=1;
+			while ($row=mysqli_fetch_array($result)) {
+				$pdf->Cell(40,12,$rr,1);
+				$pdf->Cell(40,12,$row['ExpenseDate'],1);
+			    $pdf->Cell(40,12,$row['totaldaily'],1);
+				$rr=$rr+1;
+			}
+			$pdf->Output();
+		}
+	?>
+	
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +84,7 @@
 <body>
 	<?php include_once('includes/header.php');?>
 	<?php include_once('includes/sidebar.php');?>
-		
+	
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
 			<ol class="breadcrumb">
@@ -25,6 +93,12 @@
 				</a></li>
 				<li class="active">Datewise Expense Report</li>
 			</ol>
+			<form method="POST"	action="" >
+				<div class="form-group has-success">
+					<button type="submit" class="btn btn-primary" name="gett">Generate Pdf</button>
+				</div>
+								
+	      </form>
 		</div><!--/.row-->
 		
 		
@@ -108,3 +182,4 @@ $cnt=$cnt+1;
 	
 </body>
 </html>
+<?php } ?>

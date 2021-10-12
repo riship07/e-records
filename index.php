@@ -12,15 +12,52 @@ if(isset($_POST['login']))
 	$ret=mysqli_fetch_array($query);
 		if($ret){
 			$_SESSION['detsuid']=$ret['ID'];
+			$userid=$_SESSION['detsuid'];
+			$ret =mysqli_query($con,"SELECT * FROM tblauto WHERE(UserId='$userid')");
+			$date1=date("Y-m-d");
+		
+			$date=date_create($row["date"]);
+			$str=date_format($date,"Y-m-d");
+		  
+			while($row=mysqli_fetch_assoc($ret)){
+             if($row["date"]<=$date1){
+                
+			   
+				    $ttype=$row["Ttype"];
+					$tname=$row["Tname"];
+					$tamount=$row["Tamount"];
+				    $id=$row["ID"];
+					
+					
+					 if($ttype=="expense"){
+						 $query1=mysqli_query($con,"SELECT * FROM tblexpense WHERE(UserId='$userid' && ExpenseItem='$tname' && ExpenseCost='$tamount' && ExpenseDate BETWEEN '$str' and '$date1')") ;
+						 if($query1==0)
+						  
+						   $query=mysqli_query($con, "insert into tblexpense(UserId,ExpenseDate,ExpenseItem,ExpenseCost) value('$userid','$str','$tname','$tamount')");
+						}
+					else{
+						$query1=mysqli_query($con,"SELECT * FROM tblincome WHERE UserId='$userid' && IncomeType='$tname' && IncomeCost='$tamount' ") ;
+						if($query1==0)
+						  $query=mysqli_query($con, "insert into tblincome(UserId,IncomeDate,IncomeType,IncomeCost) value('$userid','$str','$tname','$tamount')");
+					     
+						}
+					
+				   
+				}
+			 
+			}	
+		
+				
+	
 			header("location: dashboard.php");
 		}
 		else{
 		$msg="Invalid Details.";
 		
 		}
+	}	
+
 	
-	
-}
 else{
 ?>
 

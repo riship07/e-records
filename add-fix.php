@@ -9,27 +9,28 @@ if (strlen($_SESSION['detsuid'])==0) {
 if(isset($_POST['submit']))
   {
   	$userid=$_SESSION['detsuid'];
-    $dateexpense=$_POST['dateexpense'];
-     $item=$_POST['item'];
-     $costitem=$_POST['costitem'];
-	 $categories=$_POST['categories'];
-    $query=mysqli_query($con, "insert into tblexpense(UserId,ExpenseDate,ExpenseItem,ExpenseCost,Categories) value('$userid','$dateexpense','$item','$costitem','$categories')");
+    $Ttype=$_POST['transaction'];
+    $Tname=$_POST['tname'];
+    $Amount=$_POST['amount'];
+    $fdate=$_POST['date'];
+   
+    $query=mysqli_query($con, "insert into tblauto(UserId,Ttype,Tname,Tamount,date) value('$userid','$Ttype','$Tname','$Amount','$fdate')");
 if($query){
-echo "<script>alert('Expense has been added');</script>";
-echo "<script>window.location.href='manage-expense.php'</script>";
+    echo "<script>alert('Fix Transaction has been added');</script>";
+    
 } else {
-echo "<script>alert('Something went wrong. Please try again');</script>";
+    echo "<script>alert('Something went wrong. Please try again');</script>";
 
 }
   
 }
-  ?>
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Daily Expense Tracker || Add Expense</title>
+	<title>Daily Expense Tracker || Add Fix Transaction</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 	<link href="css/datepicker3.css" rel="stylesheet">
@@ -37,9 +38,6 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 	
 	<!--Custom Font-->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-	
-	<script src="js/html5shiv.js"></script>
-	<script src="js/respond.min.js"></script>
 	
 </head>
 <body>
@@ -52,7 +50,7 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 				<li><a href="#">
 					<em class="fa fa-home"></em>
 				</a></li>
-				<li class="active">Expense</li>
+				<li class="active">Add Fix Transaction</li>
 			</ol>
 		</div><!--/.row-->
 		
@@ -65,41 +63,44 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 				
 				
 				<div class="panel panel-default">
-					<div class="panel-heading">Expense</div>
+					<div class="panel-heading">Add Fix Transaction</div>
 					<div class="panel-body">
 						<p style="font-size:16px; color:red" align="center"> <?php if($msg){
     echo $msg;
   }  ?> </p>
 						<div class="col-md-12">
-							
-							<form role="form" method="post" action="">
-                             <div class="form-group">
-								 <label>Choose a Categorie</label></br>
-								<select name="categories" class="mdb-select md-form" searchable="Chose one..">
-									<option value="" disabled selected>Categories</option>
-									<option value="Groceries">Groceries</option>
-									<option value="Entertainment">Entertainment</option>
-									<option value="Food">Food</option>
-									<option value="Electronics">Electronics</option>
-									<option value="Other">Other</option>
-								</select></br>
-                             </div>
-								<div class="form-group">
-									<label>Date of Expense</label>
-									<input class="form-control" type="date" value="" name="dateexpense" required="true">
+					
+
+
+							<form role="form" method="post" action="" name="fix">
+                            
+                            <div class="form-group">
+                                <label for="transaction">Choose a type:</label>
+                                    <select name="transaction" id="transaction">
+                                        <option value="income">Income</option>
+                                        <option value="expense">Expense</option>
+                                        
+                                    </select>
+                                    <br><br>
+                            </div>
+                                <div class="form-group">
+									<label>Name</label>
+									<input class="form-control" type="text"  id="tname" name="tname" required="true">
+								</div>
+                                <div class="form-group">
+									<label>Amount</label>
+									<input class="form-control" type="int"  id="amount" name="amount" required="true">
 								</div>
 								<div class="form-group">
-									<label>Item</label>
-									<input type="text" class="form-control" name="item" value="" required="true">
+									<label> Date</label>
+									<input class="form-control" type="date"  id="date" name="date" required="true">
 								</div>
 								
-								<div class="form-group">
-									<label>Cost of Item</label>
-									<input class="form-control" type="text" value="" required="true" name="costitem">
-								</div>
-																
+								
+							
+								
 								<div class="form-group has-success">
-									<button type="submit" class="btn btn-primary" name="submit">Add</button>
+									<button type="submit" class="btn btn-primary" name="submit">Submit</button>
 								</div>
 								
 								

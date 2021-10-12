@@ -12,9 +12,7 @@ include('includes/dbconnection.php');
                 while($row = mysqli_fetch_array($result))  
                 {    
                            
-                    echo '<img src="data:image/jpeg;base64,'.base64_encode($row['image'] ).'" height="200" width="200" class="img-thumnail" /> ';
-                               
-                     
+                    echo '<img src="data:image/jpeg;base64,'.base64_encode($row['image'] ).'" height="200" width="200" class="img-thumnail" /> ';    
                 }  
                 ?> 
             </div>
@@ -73,11 +71,13 @@ include('includes/dbconnection.php');
                     
                 </ul>
             </li>
+      
 
 
 
 
-            
+            <li><a href="add-fix.php"><em class="fa fa-user">&nbsp;</em> Add fix transaction</a></li>
+            <li><a href="Overview.php"><em class="fa fa-user">&nbsp;</em> Overview</a></li>
             <li><a href="user-profile.php"><em class="fa fa-user">&nbsp;</em> Profile</a></li>
              <li><a href="change-password.php"><em class="fa fa-clone">&nbsp;</em> Change Password</a></li>
 <li><a href="logout.php"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
@@ -87,11 +87,3 @@ include('includes/dbconnection.php');
 
 
 
-
-            
-            <li><a href="user-profile.php"><em class="fa fa-user">&nbsp;</em> Profile</a></li>
-             <li><a href="change-password.php"><em class="fa fa-clone">&nbsp;</em> Change Password</a></li>
-<li><a href="logout.php"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
-
-        </ul>
-    </div>

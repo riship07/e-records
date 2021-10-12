@@ -18,7 +18,7 @@ if(isset($_POST['submit']))
 		$msg="This email  associated with another account";
     }
     else{
-     $query=mysqli_query($con, "insert into tbluser(FullName, MobileNumber, Email,  Password, Image) value('$fname', '$mobno', '$email', '$password', '$file' )");
+     $query=mysqli_query($con, "INSERT INTO tbluser(FullName, MobileNumber, Email,  Password, Image) VALUE('$fname', '$mobno', '$email', '$password', '$file' )");
     if ($query) {
      $msg="You have successfully registered";
   }
