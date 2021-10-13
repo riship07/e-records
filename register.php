@@ -8,27 +8,50 @@ if(isset($_POST['submit']))
     $mobno=$_POST['mobilenumber'];
     $email=$_POST['email'];
     $password=$_POST['password'];
-	
-	$file = addslashes(file_get_contents($_FILES["image"]["tmp_name"]));  
-	
-
-    $ret=mysqli_query($con, "select Email from tbluser where Email='$email' ");
+	$ret=mysqli_query($con, "select Email from tbluser where Email='$email' ");
     $result=mysqli_fetch_array($ret);
     if($result>0){
 		$msg="This email  associated with another account";
     }
-    else{
-     $query=mysqli_query($con, "INSERT INTO tbluser(FullName, MobileNumber, Email,  Password, Image) VALUE('$fname', '$mobno', '$email', '$password', '$file' )");
-    if ($query) {
-     $msg="You have successfully registered";
-  }
-  else
-    {
-      $msg="Something Went Wrong. Please try again";
-    }
-}
-}
+	else{
 
+		if(isset($_FILES['image'])){
+			$img_name = $_FILES['image']['name'];
+			$img_type = $_FILES['image']['type'];
+			$tmp_name = $_FILES['image']['tmp_name'];
+
+			$img_explode = explode('.',$img_name);
+			$img_ext = end($img_explode);
+
+			$extensions = ["jpeg", "png", "jpg"];
+			if(in_array($img_ext, $extensions) === true){
+			    $types = ["image/jpeg", "image/jpg", "image/png"];
+			
+				$time = time();
+			    $new_img_name = $time.$img_name;
+			if(move_uploaded_file($tmp_name,"images/".$new_img_name)){
+				$msg="image uploaded";
+			} else {
+				echo $tmp_name;
+				
+			}
+
+			
+			}
+		}
+    
+   
+       $query=mysqli_query($con, "INSERT INTO tbluser(FullName, MobileNumber, Email,  Password , Images) VALUE('$fname', '$mobno', '$email', '$password', '$new_img_name' )");
+			if ($query) {
+			 $msg="You have successfully registered";
+		    }
+		    else
+			{
+			 $msg="Something Went Wrong. Please try again";
+			}
+		
+		}
+	}
  ?>
 <!DOCTYPE html>
 <html>
@@ -96,7 +119,7 @@ function image(){
 							<div class="form-group">
 								<input type="password" class="form-control" id="repeatpassword" name="repeatpassword" placeholder="Repeat Password" required="true">
 							</div>
-							<label>Upload Your Image(<60kb)</label>
+							<label>Upload Your Image</label>
 							<div class="form-group">
 							    <input type="file" class="form-control" name="image" id="image" placeholder="Upload Image" onchange= image()>
 							</div>

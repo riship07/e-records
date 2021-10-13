@@ -7,12 +7,12 @@ include('includes/dbconnection.php');
             <div class="profile-userpic">
               <?php  
                 $uid=$_SESSION['detsuid'];
-                $query = "select image from tbluser where ID='$uid'";  
+                $query = "select Images from tbluser where ID='$uid'";  
                 $result = mysqli_query($con, $query);  
                 while($row = mysqli_fetch_array($result))  
                 {    
                            
-                    echo '<img src="data:image/jpeg;base64,'.base64_encode($row['image'] ).'" height="200" width="200" class="img-thumnail" /> ';    
+                    echo '<img src="images/'.$row['Images'].'" alt="" /> ';    
                 }  
                 ?> 
             </div>
@@ -33,7 +33,7 @@ include('includes/dbconnection.php');
         <div class="divider"></div>
         
         <ul class="nav menu">
-            <li class="active"><a href="dashboard.php"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
+            <li><a href="dashboard.php"><em class="fas fa-columns">&nbsp;</em> Dashboard</a></li>
             
             
            
@@ -76,8 +76,8 @@ include('includes/dbconnection.php');
 
 
 
-            <li><a href="add-fix.php"><em class="fa fa-user">&nbsp;</em> Add fix transaction</a></li>
-            <li><a href="Overview.php"><em class="fa fa-user">&nbsp;</em> Overview</a></li>
+            <li><a href="add-fix.php"><em class="fab fa-autoprefixer">&nbsp;</em> Add Fix Transaction</a></li>
+            <li><a href="Overview.php"><em class="fas fa-chart-pie">&nbsp;</em> Overview</a></li>
             <li><a href="user-profile.php"><em class="fa fa-user">&nbsp;</em> Profile</a></li>
              <li><a href="change-password.php"><em class="fa fa-clone">&nbsp;</em> Change Password</a></li>
 <li><a href="logout.php"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>

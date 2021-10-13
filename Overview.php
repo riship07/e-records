@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+
 include('includes/dbconnection.php');
 ?>
 <!DOCTYPE html>
@@ -26,11 +26,23 @@ include('includes/dbconnection.php');
 	<?php include_once('includes/sidebar.php');?>
     <?php
        $userid=$_SESSION['detsuid'];
-       $query=mysqli_query($con,"SELECT SUM(ExpenseCost) AS total FROM tblexpense WHERE UserId=1 && Categories='Food' ");
-       while($row=mysqli_fetch_array($query)){
-           $total = $row["total"];
-       }
-      ?>
+	   $arr=array();
+	   $i=1;
+	   
+	  while($i<19){
+	    $query=mysqli_query($con,"SELECT SUM(ExpenseCost) AS total FROM tblexpense WHERE UserId='$userid' && Categories='$i' ");
+		$row=mysqli_fetch_assoc($query);
+		if($row['total']==NULL){
+			array_push($arr,0);
+			$i=$i+1;
+		}else{
+			array_push($arr,$row['total']);
+			$i=$i+1;
+	  }
+	}
+	?>
+	  
+      
 		
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
@@ -54,24 +66,37 @@ include('includes/dbconnection.php');
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
-// Load google charts
+
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-// Draw the chart and set the chart values
+
 function drawChart() {
-  var t=9;
-  var data = google.visualization.arrayToDataTable([
-  ['Task', 'Hours per Day'],
-  ['Entertainment', 8],
-  ['Food', t],
-  ['Groceries', 4],
-  ['Other', 2],
-  ['Elecronics', 8]
+ 
+	var data = google.visualization.arrayToDataTable([
+	['Task', 'Hours per Day'],
+	['Groceries', <?php  print_r($arr[0]); ?>],
+	['Food', <?php  print_r($arr[1]); ?>],
+	['Meals And Entertainment', <?php  print_r($arr[2]); ?>],
+	['Electronics', <?php  print_r($arr[3]); ?>],
+	['Rent', <?php  print_r($arr[4]); ?>],
+	['Home Ofice Cost', <?php  print_r($arr[5]); ?>],
+	['Furniture,Equipment and Machinery', <?php  print_r($arr[6]); ?>],
+	['Advertisement And Marketing', <?php  print_r($arr[7]); ?>],
+	['Travel Expense', <?php  print_r($arr[8]); ?>],
+	['Vehical expense', <?php  print_r($arr[9]); ?>],
+	['Taxes', <?php  print_r($arr[10]); ?>],
+	['Insurance and Lincense', <?php  print_r($arr[11]); ?>],
+	['Training And Education', <?php  print_r($arr[12]); ?>],
+	['Personal Expense', <?php  print_r($arr[13]); ?>],
+	['Stationary Expense', <?php  print_r($arr[14]); ?>],
+	['Festival Expense', <?php  print_r($arr[15]); ?>],
+	['Toy And Decoration', <?php  print_r($arr[16]); ?>],
+	['Others', <?php  print_r($arr[17]); ?>]
 ]);
 
 
-  var options = {'title':'My Expense Overview', 'width':800, 'height':500};
+  var options = {'title':'My Expense Overview', 'width':900, 'height':500};
 
   
   var chart = new google.visualization.PieChart(document.getElementById('piechart'));

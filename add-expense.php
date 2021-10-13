@@ -8,12 +8,16 @@ if (strlen($_SESSION['detsuid'])==0) {
 
 if(isset($_POST['submit']))
   {
-  	$userid=$_SESSION['detsuid'];
-    $dateexpense=$_POST['dateexpense'];
+  	 $userid=$_SESSION['detsuid'];
+     $dateexpense=$_POST['dateexpense'];
      $item=$_POST['item'];
      $costitem=$_POST['costitem'];
 	 $categories=$_POST['categories'];
-    $query=mysqli_query($con, "insert into tblexpense(UserId,ExpenseDate,ExpenseItem,ExpenseCost,Categories) value('$userid','$dateexpense','$item','$costitem','$categories')");
+	 $query1=mysqli_query($con,"SELECT Cat_id FROM tblcategories WHERE Cat_name='$categories'");
+	 $row=mysqli_fetch_assoc($query1);
+	 $category=$row['Cat_id'];
+	 
+     $query=mysqli_query($con, "insert into tblexpense(UserId,ExpenseDate,ExpenseItem,ExpenseCost,Categories) value('$userid','$dateexpense','$item','$costitem','$category')");
 if($query){
 echo "<script>alert('Expense has been added');</script>";
 echo "<script>window.location.href='manage-expense.php'</script>";
@@ -75,14 +79,33 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 							<form role="form" method="post" action="">
                              <div class="form-group">
 								 <label>Choose a Categorie</label></br>
-								<select name="categories" class="mdb-select md-form" searchable="Chose one..">
-									<option value="" disabled selected>Categories</option>
-									<option value="Groceries">Groceries</option>
-									<option value="Entertainment">Entertainment</option>
-									<option value="Food">Food</option>
-									<option value="Electronics">Electronics</option>
-									<option value="Other">Other</option>
-								</select></br>
+								 
+									
+											<select name="categories" id="mySelect" data-show-content="true" class="form-control">
+												<option>Select..</option>
+												
+												<option value="Groceries">Groceries</option>
+												<option value="Food">Food</option>
+												<option value="Meals And Entertainment">Entertainment</option>
+												<option value="Electronics">Elecronics</option>
+												<option value="Rent">Rent</option>
+												<option value="Home Ofice Cost">Home Office Cost</option>
+												<option value="Furniture,Equipment and Machinery">Furniture,Equipment and Machinery</option>
+												<option value="Advertisement And Marketing">Advertisement And Marketing</option>
+												<option value="Travel Expense">Travel Expense</option>
+												<option value="Vehical expense">Vehical expense</option>
+												<option value="Taxes">Taxes</option>
+												<option value="Insurance and Lincense">Insurance and Licence</option>
+												<option value="Training And Education">Training And Education</option>
+												<option value="Personal Expense">Personal Expense</option>
+												<option value="Stationary Expense">Stationary Expense</option>
+												<option value="Festival Expense">Festival Expense</option>
+												<option value="Toy And Decoration">Toy And Decoration</option>
+												<option value="Others">Others</option>
+												
+											</select>
+										
+									
                              </div>
 								<div class="form-group">
 									<label>Date of Expense</label>
@@ -116,10 +139,8 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 	
 <script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/chart.min.js"></script>
-	<script src="js/chart-data.js"></script>
-	<script src="js/easypiechart.js"></script>
-	<script src="js/easypiechart-data.js"></script>
+
+	
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script src="js/custom.js"></script>
 	
