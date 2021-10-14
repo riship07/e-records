@@ -8,6 +8,7 @@ if (strlen($_SESSION['detsuid'])==0) {
 
 if(isset($_POST['submit']))
   {
+   if(!$_POST['categories']==""){
   	 $userid=$_SESSION['detsuid'];
      $dateexpense=$_POST['dateexpense'];
      $item=$_POST['item'];
@@ -18,15 +19,19 @@ if(isset($_POST['submit']))
 	 $category=$row['Cat_id'];
 	 
      $query=mysqli_query($con, "insert into tblexpense(UserId,ExpenseDate,ExpenseItem,ExpenseCost,Categories) value('$userid','$dateexpense','$item','$costitem','$category')");
-if($query){
-echo "<script>alert('Expense has been added');</script>";
-echo "<script>window.location.href='manage-expense.php'</script>";
-} else {
-echo "<script>alert('Something went wrong. Please try again');</script>";
+		if($query){
+		echo "<script>alert('Expense has been added');</script>";
+		echo "<script>window.location.href='manage-expense.php'</script>";
+		} else {
+		echo "<script>alert('Something went wrong. Please try again');</script>";
 
-}
-  
-}
+   }
+  }
+  else
+    $msg="Please ,Select a category!";
+ }
+
+
   ?>
 <!DOCTYPE html>
 <html>
@@ -82,7 +87,7 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 								 
 									
 											<select name="categories" id="mySelect" data-show-content="true" class="form-control">
-												<option>Select..</option>
+												<option value="">Select..</option>
 												
 												<option value="Groceries">Groceries</option>
 												<option value="Food">Food</option>
@@ -107,9 +112,12 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 										
 									
                              </div>
+							    <?php 
+								  $date=date("Y-m-d");
+								?>
 								<div class="form-group">
 									<label>Date of Expense</label>
-									<input class="form-control" type="date" value="" name="dateexpense" required="true">
+									<input class="form-control" type="date" value="<?php echo $date; ?>" max="<?php echo $date; ?>" name="dateexpense" required="true">
 								</div>
 								<div class="form-group">
 									<label>Item</label>

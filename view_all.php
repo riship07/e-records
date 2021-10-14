@@ -1,40 +1,22 @@
-<?php  
+<?php
 session_start();
-error_reporting(0);
+
 include('includes/dbconnection.php');
-if (strlen($_SESSION['detsuid'])==0) {
-  header('location:logout.php');
-  } else{
-
-//code deletion
-if(isset($_GET['delid']))
-{
-$rowid=intval($_GET['delid']);
-$query=mysqli_query($con,"delete from tblexpense where ID='$rowid'");
-if($query){
-echo "<script>alert('Record successfully deleted');</script>";
-echo "<script>window.location.href='manage-expense.php'</script>";
-} else {
-echo "<script>alert('Something went wrong. Please try again');</script>";
-
-}
-
-}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Daily Expense Tracker || Manage Expense</title>
+	<title>Daily Expense Tracker - Data</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 	<link href="css/datepicker3.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
+	<link href="css/bootstrap-chart.css" rel="stylesheet">
 	
-	<!--Custom Font-->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
+	
 	<script src="js/html5shiv.js"></script>
 	<script src="js/respond.min.js"></script>
 	
@@ -42,34 +24,51 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 <body>
 	<?php include_once('includes/header.php');?>
 	<?php include_once('includes/sidebar.php');?>
+  
+      
 		
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#">
-					<em class="fa fa-home"></em>
+					<i class="fas fa-"></i>
 				</a></li>
-				<li class="active">Expense</li>
+				<li class="active">Records</li>
 			</ol>
 		</div><!--/.row-->
 		
-		
-				
-		
 		<div class="row">
 			<div class="col-lg-12">
-			
+				<h1 class="page-header">Records</h1>
+			</div>
+		</div><!--/.row-->
+    
+	    
+		<div class="row">
+			<div class="col-lg-12">
+			        <?php
+					 if(isset($_GET['date'])){
+					    $dat=$_GET['date'];
+                        echo "<div class='panel-heading'>Expenses of  => $dat</div>";
+					 }
+					 elseif(isset($_GET['month'],$_GET['year'])){
+						 $mont=$_GET['month'];
+						 $yar=$_GET['year'];
+
+						 echo "<div class='panel-heading'>Expenses of   => $mont - $yar</div>";
+					 }
+					   ?>
+					
 				
 				
-				<div class="panel panel-default">
-					<div class="panel-heading">Expense</div>
+					
 					<div class="panel-body">
 						<p style="font-size:16px; color:red" align="center"> <?php if($msg){
     echo $msg;
   }  ?> </p>
 						<div class="col-md-12">
 							
-							<div class="table-responsive">
+			<div class="table-responsive">
             <table class="table table-bordered mg-b-0">
               <thead>
                 <tr>
@@ -81,31 +80,19 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
                 </tr>
               </thead>
               <?php
-			   $userid=$_SESSION['detsuid'];
-			  $results_per_page = 2;  
-  
-			   
-			   
-			  $result = mysqli_query($con, "select * from tblexpense where UserId='$userid'");  
-			  $number_of_result = mysqli_num_rows($result);  
-			
-			  
-			  $number_of_page = ceil($number_of_result / $results_per_page);  
-			 
-			  if (!isset ($_GET['page']) ) {  
-				  $page = 1;  
-			  } else {  
-				  $page = $_GET['page'];  
-			  }  
-			
-			 
-			  $page_first_result = ($page-1) * $results_per_page; 
-             
-			  
-			    $query="select * from tblexpense where UserId='$userid' LIMIT $page_first_result,$results_per_page ";
-				$ret=mysqli_query($con,$query);  
+              $userid=$_SESSION['detsuid'];
+			if(isset($_GET['date'])){
+              $datee=$_GET['date'];
+				$ret=mysqli_query($con,"select * from tblexpense where UserId='$userid' && ExpenseDate='$datee'");
 				$cnt=1;
-            while ($row=mysqli_fetch_assoc($ret)) {
+			}
+			elseif(isset($_GET['month'],$_GET['year'])){
+				$month=$_GET['month'];
+				$year=$_GET['year'];
+				$ret=mysqli_query($con,"select * from tblexpense where UserId='$userid' && month(ExpenseDate)='$month' && year(ExpenseDate)='$year'");
+				$cnt=1;
+			}
+            while ($row=mysqli_fetch_array($ret)) {
 
 ?>
               <tbody>
@@ -124,29 +111,20 @@ $cnt=$cnt+1;
               </tbody>
             </table>
           </div>
-		  
-						</div>Page:<nav aria-label="Page navigation example">
-							<ul class="pagination">
-							<li class="page-item"><a class="page-link" href="manage-expense.php?page=<?php if($page==1)echo $page; else echo $page-1;?>"> Previous </a></li>
-								<?php
-						for($i = 1; $i<=3; $i++) { ?>
-							
-								<li class="page-item"><a class="page-link" href="manage-expense.php?page=<?php echo $i; ?>"> <?php echo $i; ?> </a></li>
-							
-								<?php } ?>
-								<li class="page-item"><a class="page-link" href="manage-expense.php?page=<?php if($page>$number_of_page-1) echo $page; else echo $page+1;?>"> Next </a></li>
-							</ul>
-							</nav>
-							
-							
+						</div>
 					</div>
 				</div><!-- /.panel-->
 			</div><!-- /.col-->
 			<?php include_once('includes/footer.php');?>
 		</div><!-- /.row -->
 	</div><!--/.main-->
-	
-<script src="js/jquery-1.11.1.min.js"></script>
+
+
+
+  	
+		
+	<?php include_once('includes/footer.php');?>
+	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/chart.min.js"></script>
 	<script src="js/chart-data.js"></script>
@@ -155,6 +133,6 @@ $cnt=$cnt+1;
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script src="js/custom.js"></script>
 	
+		
 </body>
 </html>
-<?php } ?>

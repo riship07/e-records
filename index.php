@@ -13,8 +13,8 @@ if(isset($_POST['login']))
 		if($ret){
 			$_SESSION['detsuid']=$ret['ID'];
 			$userid=$_SESSION['detsuid'];
-			$date1=date("Y-m-d");
-			$query=mysqli_query($con,"UPDATE tbluser SET logtime='$date1' WHERE(UserId='$userid')");
+			$date=date("Y-m-d");
+			$query=mysqli_query($con,"UPDATE tbluser SET logtime='$date' WHERE(UserId='$userid')");
 			$ret =mysqli_query($con,"SELECT * FROM tblauto WHERE(UserId='$userid')");
 			
 		    
@@ -60,7 +60,7 @@ if(isset($_POST['login']))
 	}	
 
 	
-else{
+
 ?>
 
 <!DOCTYPE html>
@@ -111,4 +111,4 @@ else{
 	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
-<?php } ?>
+

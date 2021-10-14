@@ -70,11 +70,11 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
     echo $msg;
   }  ?> </p>
 						<div class="col-md-12">
-							
+							<?php $date=date("Y-m-d"); ?>
 							<form role="form" method="post" action="">
 								<div class="form-group">
 									<label>Date of Income</label>
-									<input class="form-control" type="date" value="" name="dateincome" required="true">
+									<input class="form-control" type="date" value="<?php echo $date; ?>" max="<?php echo $date; ?>" name="dateincome" required="true">
 								</div>
 								<div class="form-group">
 									<label>Income type</label>

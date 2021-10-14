@@ -1,3 +1,17 @@
+<?php
+  session_start();
+ 
+  include('includes/dbconnection.php');
+  
+  if (strlen($_SESSION['detsuid'])==0) {
+	header('location:logout.php');
+	}
+else{
+	
+$fdate=$_POST['fromdate'];
+ $tdate=$_POST['todate'];
+$rtype=$_POST['requesttype'];
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,11 +55,7 @@
 
 						<div class="col-md-12">
 					
-<?php
-$fdate=$_POST['fromdate'];
- $tdate=$_POST['todate'];
-$rtype=$_POST['requesttype'];
-?>
+
 <h5 align="center" style="color:blue">Yearwise Expense Report from <?php echo $fdate?> to <?php echo $tdate?></h5>
 <hr />
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -62,7 +72,7 @@ $rtype=$_POST['requesttype'];
 $userid=$_SESSION['detsuid'];
 $ret=mysqli_query($con,"SELECT year(ExpenseDate) as rptyear,SUM(ExpenseCost) as totalyear FROM tblexpense  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by year(ExpenseDate)");
 $cnt=1;
-while ($row=mysqli_fetch_array($ret)) {
+while ($row=mysqli_fetch_assoc($ret)) {
 
 ?>
               
@@ -108,3 +118,4 @@ $cnt=$cnt+1;
 	
 </body>
 </html>
+<?php } ?>

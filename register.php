@@ -17,16 +17,15 @@ if(isset($_POST['submit']))
 
 		if(isset($_FILES['image'])){
 			$img_name = $_FILES['image']['name'];
-			$img_type = $_FILES['image']['type'];
+			
 			$tmp_name = $_FILES['image']['tmp_name'];
 
 			$img_explode = explode('.',$img_name);
 			$img_ext = end($img_explode);
 
-			$extensions = ["jpeg", "png", "jpg"];
+			$extensions = ["gif","jpeg", "png", "jpg"];
 			if(in_array($img_ext, $extensions) === true){
-			    $types = ["image/jpeg", "image/jpg", "image/png"];
-			
+			   
 				$time = time();
 			    $new_img_name = $time.$img_name;
 			if(move_uploaded_file($tmp_name,"images/".$new_img_name)){
@@ -43,7 +42,11 @@ if(isset($_POST['submit']))
    
        $query=mysqli_query($con, "INSERT INTO tbluser(FullName, MobileNumber, Email,  Password , Images) VALUE('$fname', '$mobno', '$email', '$password', '$new_img_name' )");
 			if ($query) {
-			 $msg="You have successfully registered";
+			 $query=mysqli_query($con,"select * from tbluser where  Email='$email' && Password='$password' ");
+			 $ret=mysqli_fetch_array($query);
+			 if($ret)
+			  $_SESSION['detsuid']=$ret['ID'];
+			 header("location: dashboard.php");
 		    }
 		    else
 			{
@@ -73,21 +76,7 @@ if(document.signup.password.value!=document.signup.repeatpassword.value)
 }
 return true;
 } 
-function image(){
-	var image_name = document.getElementById("image").value;
-	if(image_name == '')  
-           {  
-                alert("Please Select Image");  
-                return false;  
-           }  
-	else{
-		var extension = document.getElementById("image").value.split('.').pop().toLowerCase();
-		if(extension != 'gif' || extension != 'png' || extension != 'jpg' || extension != 'jpeg'){
-			alert('Invalid Image File');  
-            document.getElementById("image").value="";  
-            return false; 
-		}
-	}
+
 }
 
 </script>
@@ -121,7 +110,7 @@ function image(){
 							</div>
 							<label>Upload Your Image</label>
 							<div class="form-group">
-							    <input type="file" class="form-control" name="image" id="image" placeholder="Upload Image" onchange= image()>
+							    <input type="file" class="form-control" name="image" id="image" placeholder="Upload Image">
 							</div>
 							
 							<div class="checkbox">

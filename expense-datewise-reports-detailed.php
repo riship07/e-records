@@ -14,33 +14,24 @@
 			
 			function Header()
 			{
-				
-				
 				$this->SetFont('Arial','B',13);
-				
 				$this->Cell(80);
-			
-				$this->Cell(80,10,'Report',1,0,'C');
-			
-				$this->Ln(20);
+			    $this->Cell(80,10,'Report',1,0,'C');
+			    $this->Ln(20);
 			}
 			 
-		
-			function Footer()
+		   function Footer()
 			{
-				
 				$this->SetY(-15);
-				
 				$this->SetFont('Arial','I',8);
-			
-				$this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
+			    $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
 			}
 			}
 			$fdate=$_POST['fromdate'];
 			$tdate=$_POST['todate'];
 			$rtype=$_POST['requesttype']; 
 			
-			$display_heading = array('ID'=>'ID', 'ExpenseDate'=> 'Date', 'ExpenseType'=> 'Type','ExpenseCost'=> 'Cost',);
+			$display_heading = array('ID'=>'ID', 'ExpenseDate'=> 'Date','ExpenseCost'=> 'Cost',);
 			$userid=$_SESSION['detsuid'];
 			$result=mysqli_query($con,"SELECT ExpenseDate,SUM(ExpenseCost) as totaldaily FROM `tblexpense`  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by ExpenseDate");
 			$header = mysqli_query($con, "SHOW columns FROM tblexpense");
@@ -55,7 +46,7 @@
 			 $pdf->Cell(40,12,$display_heading[$heading['Field']],0);
 			}
 			$rr=1;
-			while ($row=mysqli_fetch_array($result)) {
+			while ($row=mysqli_fetch_assoc($result)) {
 				$pdf->Cell(40,12,$rr,1);
 				$pdf->Cell(40,12,$row['ExpenseDate'],1);
 			    $pdf->Cell(40,12,$row['totaldaily'],1);
@@ -129,6 +120,7 @@ $rtype=$_POST['requesttype'];
               <th>S.NO</th>
               <th>Date</th>
               <th>Expense Amount</th>
+			  <th>View All</th>
                 </tr>
                                         </tr>
                                         </thead>
@@ -145,7 +137,7 @@ while ($row=mysqli_fetch_array($ret)) {
             
                   <td><?php  echo $row['ExpenseDate'];?></td>
                   <td><?php  echo $ttlsl=$row['totaldaily'];?></td>
-           
+                  <td><a href="view_all.php?date=<?php echo $row['ExpenseDate']; ?>">View</a></td>
            
                 </tr>
                 <?php
