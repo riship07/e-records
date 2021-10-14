@@ -30,11 +30,7 @@ if(isset($_POST['submit']))
 			    $new_img_name = $time.$img_name;
 			if(move_uploaded_file($tmp_name,"images/".$new_img_name)){
 				$msg="image uploaded";
-			} else {
-				echo $tmp_name;
-				
-			}
-
+			} 
 			
 			}
 		}

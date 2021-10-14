@@ -38,7 +38,7 @@ include('includes/dbconnection.php');
             
            
             <li class="parent "><a data-toggle="collapse" href="#sub-item-1">
-                <em class="fa fa-navicon">&nbsp;</em>Add Transactions <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                <em class="fa fa-navicon">&nbsp;</em><i class="fas fa-money-bill-wave"></i> Transactions <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
                 </a>
                 <ul class="children collapse" id="sub-item-1">
                     <li><a class="" href="add-expense.php">
@@ -56,7 +56,7 @@ include('includes/dbconnection.php');
             </li>
            
             <li class="parent "><a data-toggle="collapse" href="#sub-item-2">
-                <em class="fa fa-navicon">&nbsp;</em>Expense Report <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
+                <em class="fa fa-navicon">&nbsp;</em><i class="fas fa-book"></i> Expense Report <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
                 </a>
                 <ul class="children collapse" id="sub-item-2">
                     <li><a class="" href="expense-datewise-reports.php">

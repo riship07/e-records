@@ -14,7 +14,7 @@ if(isset($_POST['login']))
 			$_SESSION['detsuid']=$ret['ID'];
 			$userid=$_SESSION['detsuid'];
 			$date=date("Y-m-d");
-			$query=mysqli_query($con,"UPDATE tbluser SET logtime='$date' WHERE(UserId='$userid')");
+			
 			$ret =mysqli_query($con,"SELECT * FROM tblauto WHERE(UserId='$userid')");
 			
 		    

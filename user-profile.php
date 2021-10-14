@@ -5,15 +5,45 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['detsuid'])==0) {
   header('location:logout.php');
   } else{
-    if(isset($_POST['submit']))
+	  
+    if(isset($_POST['update']))
   {
+	
     $userid=$_SESSION['detsuid'];
     $fullname=$_POST['fullname'];
     $mobno=$_POST['contactnumber'];
 
-     $query=mysqli_query($con, "update tbluser set FullName ='$fullname', MobileNumber='$mobno' where ID='$userid'");
+	if(isset($_FILES['image'])){
+		
+		$img_name = $_FILES['image']['name'];
+		
+		$tmp_name = $_FILES['image']['tmp_name'];
+
+		$img_explode = explode('.',$img_name);
+		$img_ext = end($img_explode);
+
+		$extensions = ["gif","jpeg", "png", "jpg"];
+		if(in_array($img_ext, $extensions) === true){
+		   
+			$time = time();
+			$new_img_name = $time.$img_name;
+			$query=mysqli_query($con,"SELECT Images FROM `tbluser` WHERE ID='$userid'");
+			$row=mysqli_fetch_assoc($query);
+			unlink("images/".$row['Images']);
+		if(move_uploaded_file($tmp_name,"images/".$new_img_name)){
+		
+		} 
+		 
+
+		}
+		
+	}
+	
+
+     $query=mysqli_query($con, "update tbluser set FullName ='$fullname', MobileNumber='$mobno', Images='$new_img_name' where ID='$userid'");
     if ($query) {
-    $msg="User profile has been updated.";
+	 $code=7;
+     $msg="User profile has been updated.";
   }
   else
     {
@@ -63,7 +93,7 @@ if (strlen($_SESSION['detsuid'])==0) {
 				<div class="panel panel-default">
 					<div class="panel-heading">Profile</div>
 					<div class="panel-body">
-						<p style="font-size:16px; color:red" align="center"> <?php if($msg){
+						<p style="font-size:16px; color:<?php if($code==7) echo 'green'; else echo 'red';?> " align="center"> <?php if($msg){
     echo $msg;
   }  ?> </p>
 						<div class="col-md-12">
@@ -74,10 +104,15 @@ $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
 ?>
-							<form role="form" method="post" action="">
+							<form role="form" method="post" action="" enctype="multipart/form-data">
 								<div class="form-group">
 									<label>Full Name</label>
 									<input class="form-control" type="text" value="<?php  echo $row['FullName'];?>" name="fullname" required="true">
+								</div>
+								
+								<div class="form-group">
+									<label>Update Your Image</label>
+									<input type="file" class="form-control" name="image" id="image" placeholder="Upload Image">
 								</div>
 								<div class="form-group">
 									<label>Email</label>
@@ -85,16 +120,16 @@ while ($row=mysqli_fetch_array($ret)) {
 								</div>
 								
 								<div class="form-group">
-									<label>Mobile Number</label>
-									<input class="form-control" type="text" value="<?php  echo $row['MobileNumber'];?>" required="true" name="contactnumber" maxlength="10">
-								</div>
+								<label>Mobile Number</label>
+								<input type="text" class="form-control" id="mobilenumber" value="<?php echo $row['MobileNumber']; ?>" name="contactnumber" placeholder="Mobile Number" maxlength="10" pattern="[0-9]{10}" required="true">
+							</div>
 								<div class="form-group">
 									<label>Registration Date</label>
 									<input class="form-control" name="regdate" type="text" value="<?php  echo $row['RegDate'];?>" readonly="true">
 								</div>
 								
 								<div class="form-group has-success">
-									<button type="submit" class="btn btn-primary" name="submit">Update</button>
+									<button type="submit" class="btn btn-primary" name="update">Update</button>
 								</div>
 								
 								
