@@ -81,7 +81,7 @@ while ($row=mysqli_fetch_assoc($ret)) {
             
                   <td><?php  echo $row['rptyear'];?></td>
                   <td><?php  echo $ttlsl=$row['totalyear'];?></td>
-           
+                  <td><a href="view_all.php?year=<?php echo $row['rptyear'];?>">View</a></td>
            
                 </tr>
                 <?php

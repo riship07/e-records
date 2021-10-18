@@ -57,6 +57,10 @@ include('includes/dbconnection.php');
 
 						 echo "<div class='panel-heading'>Expenses of   => $mont - $yar</div>";
 					 }
+					 else{
+						 $yar=$_GET['year'];
+						 echo "<div class='panel-heading'>Expense of   => $yar</div>";
+					 }
 					   ?>
 					
 				
@@ -81,18 +85,75 @@ include('includes/dbconnection.php');
               </thead>
               <?php
               $userid=$_SESSION['detsuid'];
+			  
+			  $userid=$_SESSION['detsuid'];
+			 $results_per_page = 9;  
+ 
+			  
+			  
+			  
+			
+
+
 			if(isset($_GET['date'])){
               $datee=$_GET['date'];
 				$ret=mysqli_query($con,"select * from tblexpense where UserId='$userid' && ExpenseDate='$datee'");
+				$number_of_result = mysqli_num_rows($ret);  
+		   
+			 
+				$number_of_page = ceil($number_of_result / $results_per_page);  
+			   
+				if (!isset ($_GET['page']) ) {  
+					$page = 1;  
+				} else {  
+					$page = $_GET['page'];  
+				}  
+			  
+			   
+				$page_first_result = ($page-1) * $results_per_page; 
+				$query=mysqli_query($con,"select * from tblexpense where UserId='$userid' && ExpenseDate='$datee' LIMIT $page_first_result,$results_per_page");
 				$cnt=1;
 			}
 			elseif(isset($_GET['month'],$_GET['year'])){
 				$month=$_GET['month'];
 				$year=$_GET['year'];
 				$ret=mysqli_query($con,"select * from tblexpense where UserId='$userid' && month(ExpenseDate)='$month' && year(ExpenseDate)='$year'");
+				$number_of_result = mysqli_num_rows($ret);  
+		   
+			 
+				$number_of_page = ceil($number_of_result / $results_per_page);  
+			   
+				if (!isset ($_GET['page']) ) {  
+					$page = 1;  
+				} else {  
+					$page = $_GET['page'];  
+				}  
+			  
+			   
+				$page_first_result = ($page-1) * $results_per_page;
+				$query=mysqli_query($con,"select * from tblexpense where UserId='$userid' && month(ExpenseDate)='$month' && year(ExpenseDate)='$year' LIMIT $page_first_result,$results_per_page");
 				$cnt=1;
 			}
-            while ($row=mysqli_fetch_array($ret)) {
+			else{
+				$year=$_GET['year'];
+				$ret=mysqli_query($con,"select * from tblexpense where UserId='$userid' && year(ExpenseDate)='$year'");
+				$number_of_result = mysqli_num_rows($ret);  
+		   
+			 
+				$number_of_page = ceil($number_of_result / $results_per_page);  
+			   
+				if (!isset ($_GET['page']) ) {  
+					$page = 1;  
+				} else {  
+					$page = $_GET['page'];  
+				}  
+			  
+			   
+				$page_first_result = ($page-1) * $results_per_page; 
+				$query=mysqli_query($con,"select * from tblexpense where UserId='$userid' && year(ExpenseDate)='$year' LIMIT $page_first_result,$results_per_page");
+				$cnt=1;
+			}
+            while ($row=mysqli_fetch_array($query)) {
 
 ?>
               <tbody>
@@ -111,6 +172,18 @@ $cnt=$cnt+1;
               </tbody>
             </table>
           </div>
+		  </div>Page:<nav aria-label="Page navigation example">
+							<ul class="pagination">
+							<li class="page-item"><a class="page-link" href="manage-expense.php?page=<?php if($page==1)echo $page; else echo $page-1;?>"> Previous </a></li>
+								<?php
+						for($i = 1; $i<=$number_of_page; $i++) { ?>
+							
+								<li class="page-item"><a class="page-link" href="manage-expense.php?page=<?php echo $i; ?>"> <?php echo $i; ?> </a></li>
+							
+								<?php } ?>
+								<li class="page-item"><a class="page-link" href="manage-expense.php?page=<?php if($page>$number_of_page-1) echo $page; else echo $page+1;?>"> Next </a></li>
+							</ul>
+							</nav>
 						</div>
 					</div>
 				</div><!-- /.panel-->

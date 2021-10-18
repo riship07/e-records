@@ -82,7 +82,7 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
               </thead>
               <?php
 			   $userid=$_SESSION['detsuid'];
-			  $results_per_page = 2;  
+			  $results_per_page = 10;  
   
 			   
 			   
@@ -129,7 +129,7 @@ $cnt=$cnt+1;
 							<ul class="pagination">
 							<li class="page-item"><a class="page-link" href="manage-expense.php?page=<?php if($page==1)echo $page; else echo $page-1;?>"> Previous </a></li>
 								<?php
-						for($i = 1; $i<=3; $i++) { ?>
+						for($i = 1; $i<=$number_of_page; $i++) { ?>
 							
 								<li class="page-item"><a class="page-link" href="manage-expense.php?page=<?php echo $i; ?>"> <?php echo $i; ?> </a></li>
 							
