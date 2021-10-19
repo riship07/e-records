@@ -7,20 +7,22 @@ if(isset($_POST['login']))
 {
     $email=$_POST['email'];
     $password=$_POST['password'];
-	$query=mysqli_query($con,"select * from tbluser where  Email='$email' && Password='$password' ");
 	
-	$ret=mysqli_fetch_array($query);
+	$query=mysqli_query($con,"CALL config('$email','$password')");
+	
+	$ret=mysqli_fetch_assoc($query);
 		if($ret){
 			$_SESSION['detsuid']=$ret['ID'];
 			$userid=$_SESSION['detsuid'];
-			$date=date("Y-m-d");
-			
-			$ret =mysqli_query($con,"SELECT * FROM tblauto WHERE(UserId='$userid')");
+			$date1=date("Y-m-d");
+			mysqli_free_result($query);  
+            mysqli_next_result($con); 
+			$ret =mysqli_query($con,"CALL fix('$userid')");
 			
 		    
 			
 		  
-			while($row=mysqli_fetch_assoc($ret)){
+			while($row=mysqli_fetch_array($ret)){
              if($row["date"]<=$date1){
                 
 			   
@@ -30,19 +32,24 @@ if(isset($_POST['login']))
 				    $id=$row["ID"];
 					$date=date_create($row["date"]);
 			        $str=date_format($date,"Y-m-d");
-					
+					mysqli_next_result($con); 
 					 if($ttype=="expense"){
-						 $query1=mysqli_query($con,"SELECT * FROM tblexpense WHERE(UserId='$userid' && ExpenseItem='$tname' && ExpenseCost='$tamount' && ExpenseDate BETWEEN '$str' and '$date1')") ;
-						 if(mysqli_num_rows($query1)==0)
-						  
-						   $query=mysqli_query($con, "insert into tblexpense(UserId,ExpenseDate,ExpenseItem,ExpenseCost,Categories) value('$userid','$str','$tname','$tamount','18')");
+						 $query1=mysqli_query($con,"CALL sexpense('$userid','$tname','$tamount','$str','$date1')") ;
+						 if(mysqli_num_rows($query1)==0){
+						   mysqli_next_result($con);
+						   $query=mysqli_query($con, "CALL iexpense('$userid','$str','$tname','$tamount','18')");
 						}
+						mysqli_next_result($con);
+					}
 					else{
-						$query1=mysqli_query($con,"SELECT * FROM tblincome WHERE UserId='$userid' && IncomeType='$tname' && IncomeCost='$tamount' ") ;
-						if(mysqli_num_rows($query1)==0)
-						  $query=mysqli_query($con, "insert into tblincome(UserId,IncomeDate,IncomeType,IncomeCost) value('$userid','$str','$tname','$tamount')");
-					     
+						
+						$query1=mysqli_query($con,"CALL sincome('$userid','$tname','$tamount','$str','$date1')") ;
+						if(mysqli_num_rows($query1)==0){
+						  mysqli_next_result($con);
+						  $query=mysqli_query($con, "CALL iincome('$userid','$str','$tname','$tamount')");
 						}
+						mysqli_next_result($con);
+					}
 					
 				   
 				}

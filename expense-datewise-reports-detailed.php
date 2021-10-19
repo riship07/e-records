@@ -1,61 +1,23 @@
 <?php
   session_start();
-  error_reporting(0);
+  
   include('includes/dbconnection.php');
-  include_once('fpdf/fpdf.php');
+  include_once('fpdf181/fpdf.php');
   if (strlen($_SESSION['detsuid'])==0) {
 	header('location:logout.php');
 	}else{
-		if(isset($_POST['gett'])){
+		
+$fdate=$_POST['fromdate'];
+ $tdate=$_POST['todate'];
+$rtype=$_POST['requesttype'];
+
+		?>
 							
 			 
-			class PDF extends FPDF
-			{
 			
-			function Header()
-			{
-				$this->SetFont('Arial','B',13);
-				$this->Cell(80);
-			    $this->Cell(80,10,'Report',1,0,'C');
-			    $this->Ln(20);
-			}
-			 
-		   function Footer()
-			{
-				$this->SetY(-15);
-				$this->SetFont('Arial','I',8);
-			    $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-			}
-			}
-			$fdate=$_POST['fromdate'];
-			$tdate=$_POST['todate'];
-			$rtype=$_POST['requesttype']; 
 			
-			$display_heading = array('ID'=>'ID', 'ExpenseDate'=> 'Date','ExpenseCost'=> 'Cost',);
-			$userid=$_SESSION['detsuid'];
-			$result=mysqli_query($con,"SELECT ExpenseDate,SUM(ExpenseCost) as totaldaily FROM `tblexpense`  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by ExpenseDate");
-			$header = mysqli_query($con, "SHOW columns FROM tblexpense");
-			 
-			$pdf = new PDF();
-		
-			$pdf->AddPage();
-		
-			$pdf->AliasNbPages();
-			$pdf->SetFont('Arial','B',12);
-			foreach($header as $heading) {
-			 $pdf->Cell(40,12,$display_heading[$heading['Field']],0);
-			}
-			$rr=1;
-			while ($row=mysqli_fetch_assoc($result)) {
-				$pdf->Cell(40,12,$rr,1);
-				$pdf->Cell(40,12,$row['ExpenseDate'],1);
-			    $pdf->Cell(40,12,$row['totaldaily'],1);
-				$rr=$rr+1;
-			}
-			$pdf->Output();
-		}
-	?>
 	
+		
 
 <!DOCTYPE html>
 <html>
@@ -86,7 +48,7 @@
 			</ol>
 			<form method="POST"	action="" >
 				<div class="form-group has-success">
-					<button type="submit" class="btn btn-primary" name="gett">Generate Pdf</button>
+					<button type="submit" value = "Generate PDF" class="btn btn-primary" name="gett"><a href="generate_pdf.php?fdate=<?php echo $fdate ; ?> & tdate=<?php echo $tdate; ?>">Generate Pdf</a></button>
 				</div>
 								
 	      </form>
@@ -106,11 +68,7 @@
 
 						<div class="col-md-12">
 					
-<?php
-$fdate=$_POST['fromdate'];
- $tdate=$_POST['todate'];
-$rtype=$_POST['requesttype'];
-?>
+
 <h5 align="center" style="color:blue">Datewise Expense Report from <?php echo $fdate?> to <?php echo $tdate?></h5>
 <hr />
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">

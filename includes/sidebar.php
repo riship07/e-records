@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+
 include('includes/dbconnection.php');
 ?>
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
@@ -7,22 +7,23 @@ include('includes/dbconnection.php');
             <div class="profile-userpic">
               <?php  
                 $uid=$_SESSION['detsuid'];
-                $query = "select Images from tbluser where ID='$uid'";  
+                $query = "CALL simage('$uid')";  
                 $result = mysqli_query($con, $query);  
                 while($row = mysqli_fetch_array($result))  
                 {    
                            
                     echo '<img src="images/'.$row['Images'].'" alt="" /> ';    
                 }  
+                mysqli_next_result($con);
                 ?> 
             </div>
             <div class="profile-usertitle">
                 <?php
                     $uid=$_SESSION['detsuid'];
-                    $ret=mysqli_query($con,"select FullName from tbluser where ID='$uid'");
+                    $ret=mysqli_query($con,"CALL sfullname('$uid')");
                     $row=mysqli_fetch_array($ret);
                     $name=$row['FullName'];
-
+                    mysqli_next_result($con);
                 ?>
 
                 <div class="profile-usertitle-name"><?php echo $name; ?></div>

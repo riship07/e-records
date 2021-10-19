@@ -43,7 +43,7 @@
   }  ?> </p>
 						<div class="col-md-12">
 					
-
+                            <?php $date=date("Y-m-d"); ?>
 
 							<form role="form" method="post" action="expense-yearwise-reports-detailed.php" name="bwdatesreport">
 								<div class="form-group">
@@ -52,7 +52,7 @@
 								</div>
 								<div class="form-group">
 									<label>To Date</label>
-									<input class="form-control" type="date"  id="todate" name="todate" required="true">
+									<input class="form-control" type="date"  id="todate" name="todate" max="<?php echo $date; ?>" required="true">
 								</div>
 								
 							

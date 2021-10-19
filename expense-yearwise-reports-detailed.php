@@ -39,6 +39,12 @@ $rtype=$_POST['requesttype'];
 				</a></li>
 				<li class="active">Yearwise Expense Report</li>
 			</ol>
+			<form method="POST"	action="" >
+				<div class="form-group has-success">
+				<a href="generate_pdf.php?fdate=<?php echo $fdate ; ?> & tdate=<?php echo $tdate; ?>" class="btn btn-info">Generate PDF</a> 
+				</div>
+								
+	      </form>
 		</div><!--/.row-->
 		
 		
