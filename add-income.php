@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+// error_reporting(0);
 include('includes/dbconnection.php');
 if (strlen($_SESSION['detsuid'])==0) {
   header('location:logout.php');
@@ -12,7 +12,7 @@ if(isset($_POST['submit']))
     $dateincome=$_POST['dateincome'];
      $item=$_POST['item'];
      $costitem=$_POST['costitem'];
-    $query=mysqli_query($con, "insert into tblincome(UserId,IncomeDate,IncomeType,IncomeCost) value('$userid','$dateincome','$item','$costitem')");
+    $query=$con->query("CALL iincome('$userid','$dateincome','$item','$costitem')");
 if($query){
 echo "<script>alert('Income has been added');</script>";
 echo "<script>window.location.href='manage-expense.php'</script>";

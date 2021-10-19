@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+// error_reporting(0);
 include('includes/dbconnection.php');
 ?>
 <!DOCTYPE html>
@@ -54,9 +54,11 @@ include('includes/dbconnection.php');
 // Today Expense
 $userid=$_SESSION['detsuid'];
 $tdate=date('Y-m-d');
-$query=mysqli_query($con,"select sum(ExpenseCost)  as todaysexpense from tblexpense where (ExpenseDate)='$tdate' && (UserId='$userid');");
-$result=mysqli_fetch_array($query);
-$sum_today_expense=$result['todaysexpense'];
+
+$query1=$con->query("CALL todaye('$tdate','$userid',@texpense)");
+$query=$con->query("SELECT @texpense");
+$result=$query->fetch_assoc();
+$sum_today_expense=$result['@texpense'];
  ?> 
 
 						<h4>Today's Expense</h4>
@@ -76,9 +78,10 @@ echo $sum_today_expense;
 //Yestreday Expense
 $userid=$_SESSION['detsuid'];
 $ydate=date('Y-m-d',strtotime("-1 days"));
-$query1=mysqli_query($con,"select sum(ExpenseCost)  as yesterdayexpense from tblexpense where (ExpenseDate)='$ydate' && (UserId='$userid');");
-$result1=mysqli_fetch_array($query1);
-$sum_yesterday_expense=$result1['yesterdayexpense'];
+$sql=$con->query("CALL yesterdaye('$ydate','$userid',@yexpense)");
+$query1=$con->query("SELECT @yexpense");
+$result1=$query1->fetch_assoc();
+$sum_yesterday_expense=$result1['@yexpense'];
  ?> 
 					<div class="panel-body easypiechart-panel">
 						<h4>Yesterday's Expense</h4>
@@ -99,9 +102,10 @@ echo $sum_yesterday_expense;
 $userid=$_SESSION['detsuid'];
  $pastdate=  date("Y-m-d", strtotime("-1 week")); 
 $crrntdte=date("Y-m-d");
-$query2=mysqli_query($con,"select sum(ExpenseCost)  as weeklyexpense from tblexpense where ((ExpenseDate) between '$pastdate' and '$crrntdte') && (UserId='$userid');");
-$result2=mysqli_fetch_array($query2);
-$sum_weekly_expense=$result2['weeklyexpense'];
+$query=$con->query("CALL weeke('$pastdate','$crrntdte','$userid',@wexpense)");
+$query2=$con->query("SELECT @wexpense");
+$result2=$query2->fetch_assoc();
+$sum_weekly_expense=$result2['@wexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Last 7day's Expense</h4>
@@ -122,8 +126,8 @@ echo $sum_weekly_expense;
 $userid=$_SESSION['detsuid'];
  $monthdate=  date("Y-m-d", strtotime("-1 month")); 
 $crrntdte=date("Y-m-d");
-$query3=mysqli_query($con,"select sum(ExpenseCost)  as monthlyexpense from tblexpense where ((ExpenseDate) between '$monthdate' and '$crrntdte') && (UserId='$userid');");
-$result3=mysqli_fetch_array($query3);
+$query3=$con->query("select sum(ExpenseCost)  as monthlyexpense from tblexpense where ((ExpenseDate) between '$monthdate' and '$crrntdte') && (UserId='$userid');");
+$result3=$query3->fetch_assoc();
 $sum_monthly_expense=$result3['monthlyexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
@@ -147,8 +151,8 @@ echo $sum_monthly_expense;
 //Yearly Expense
 $userid=$_SESSION['detsuid'];
  $cyear= date("Y");
-$query4=mysqli_query($con,"select sum(ExpenseCost)  as yearlyexpense from tblexpense where (year(ExpenseDate)='$cyear') && (UserId='$userid');");
-$result4=mysqli_fetch_array($query4);
+$query4=$con->query("select sum(ExpenseCost)  as yearlyexpense from tblexpense where (year(ExpenseDate)='$cyear') && (UserId='$userid');");
+$result4=$query4->fetch_assoc();
 $sum_yearly_expense=$result4['yearlyexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
@@ -173,8 +177,8 @@ echo $sum_yearly_expense;
 					<?php
 //total Expense
 $userid=$_SESSION['detsuid'];
-$query5=mysqli_query($con,"select sum(ExpenseCost)  as totalexpense from tblexpense where UserId='$userid';");
-$result5=mysqli_fetch_array($query5);
+$query5=$con->query("select sum(ExpenseCost)  as totalexpense from tblexpense where UserId='$userid';");
+$result5=$query5->fetch_assoc();
 $sum_total_expense=$result5['totalexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
@@ -198,8 +202,8 @@ echo $sum_total_expense;
 					<?php
 //total Income
 $userid=$_SESSION['detsuid'];
-$query6=mysqli_query($con,"select sum(IncomeCost)  as totalincome from tblincome where UserId='$userid';");
-$result6=mysqli_fetch_array($query6);
+$query6=$con->query("select sum(IncomeCost)  as totalincome from tblincome where UserId='$userid';");
+$result6=$query6->fetch_assoc();
 $sum_total_income=$result6['totalincome'];
  ?>
 					<div class="panel-body easypiechart-panel">

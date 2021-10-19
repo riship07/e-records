@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-error_reporting(0);
+
 
 if(isset($_POST['submit']))
   {
@@ -10,7 +10,7 @@ if(isset($_POST['submit']))
     $email=$_SESSION['email'];
     $password=$_POST['newpassword'];
 
-        $query=mysqli_query($con,"update tbluser set Password='$password'  where  Email='$email' && MobileNumber='$contactno' ");
+        $query=$con->query("update tbluser set Password='$password'  where  Email='$email' && MobileNumber='$contactno' ");
    if($query)
    {
 echo "<script>alert('Password successfully changed');</script>";

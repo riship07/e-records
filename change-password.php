@@ -1,7 +1,8 @@
 <?php
 session_start();
 include('includes/dbconnection.php');
-error_reporting(0);
+
+// error_reporting(0);
 if (strlen($_SESSION['detsuid'])==0) {
   header('location:logout.php');
   } else{
@@ -10,10 +11,14 @@ if (strlen($_SESSION['detsuid'])==0) {
 		$userid=$_SESSION['detsuid'];
 		$cpassword=$_POST['currentpassword'];
 		$newpassword=$_POST['newpassword'];
-		$query=mysqli_query($con,"select ID from tbluser where ID='$userid' and   Password='$cpassword'");
-		$row=mysqli_fetch_array($query);
+		$query=$con->query("CALL password('$userid','$cpassword')");
+		$row=$query->fetch_assoc();
 	if($row>0){
-		$ret=mysqli_query($con,"update tbluser set Password='$newpassword' where ID='$userid'");
+		if (!function_exists('clearStoredResults'))
+		   include('includes/procedures.php');
+		clearStoredResults($con);
+		$ret=$con->query("CALL uuser('$newpassword','$userid')");
+		
 		$msg= "Your password successully changed"; 
 	} else {
 		$tag = 1;
@@ -55,8 +60,8 @@ return true;
 </script>
 </head>
 <body>
-	<?php include_once('includes/header.php');?>
-	<?php include_once('includes/sidebar.php');?>
+	<?php include('includes/header.php');?>
+	<?php include('includes/sidebar.php');?>
 		
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
@@ -90,10 +95,6 @@ return true;
 						<div class="col-md-12">
 							 <?php
 $userid=$_SESSION['detsuid'];
-$ret=mysqli_query($con,"select * from tbluser where ID='$userid'");
-$cnt=1;
-while ($row=mysqli_fetch_array($ret)) {
-
 ?>
 							<form role="form" method="post" action="" name="changepassword" onsubmit="return checkpass();">
 								<div class="form-group">
@@ -116,7 +117,7 @@ while ($row=mysqli_fetch_array($ret)) {
 								
 								
 								</div>
-								<?php } ?>
+								
 							</form>
 						</div>
 					</div>

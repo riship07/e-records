@@ -48,7 +48,7 @@ $rtype=$_POST['requesttype'];
 			</ol>
 			<form method="POST"	action="" >
 				<div class="form-group has-success">
-					<button type="submit" value = "Generate PDF" class="btn btn-primary" name="gett"><a href="generate_pdf.php?fdate=<?php echo $fdate ; ?> & tdate=<?php echo $tdate; ?>">Generate Pdf</a></button>
+				<a href="generate_pdf.php?fdate=<?php echo $fdate ; ?> & tdate=<?php echo $tdate; ?>" class="btn btn-info">Generate PDF</a> 
 				</div>
 								
 	      </form>
@@ -84,9 +84,9 @@ $rtype=$_POST['requesttype'];
                                         </thead>
  <?php
 $userid=$_SESSION['detsuid'];
-$ret=mysqli_query($con,"SELECT ExpenseDate,SUM(ExpenseCost) as totaldaily FROM `tblexpense`  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by ExpenseDate");
+$ret=$con->query("SELECT ExpenseDate,SUM(ExpenseCost) as totaldaily FROM `tblexpense`  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by ExpenseDate");
 $cnt=1;
-while ($row=mysqli_fetch_array($ret)) {
+while ($row=$ret->fetch_assoc()) {
 
 ?>
               

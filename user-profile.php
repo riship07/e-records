@@ -27,8 +27,8 @@ if (strlen($_SESSION['detsuid'])==0) {
 		   
 			$time = time();
 			$new_img_name = $time.$img_name;
-			$query=mysqli_query($con,"SELECT Images FROM `tbluser` WHERE ID='$userid'");
-			$row=mysqli_fetch_assoc($query);
+			$query=$con->query("SELECT Images FROM `tbluser` WHERE ID='$userid'");
+			$row=$query->fetch_assoc();
 			unlink("images/".$row['Images']);
 		if(move_uploaded_file($tmp_name,"images/".$new_img_name)){
 		
@@ -40,7 +40,7 @@ if (strlen($_SESSION['detsuid'])==0) {
 	}
 	
 
-     $query=mysqli_query($con, "update tbluser set FullName ='$fullname', MobileNumber='$mobno', Images='$new_img_name' where ID='$userid'");
+     $query=$con->query("update tbluser set FullName ='$fullname', MobileNumber='$mobno', Images='$new_img_name' where ID='$userid'");
     if ($query) {
 	 $code=7;
      $msg="User profile has been updated.";
@@ -99,9 +99,9 @@ if (strlen($_SESSION['detsuid'])==0) {
 						<div class="col-md-12">
 							 <?php
 $userid=$_SESSION['detsuid'];
-$ret=mysqli_query($con,"select * from tbluser where ID='$userid'");
+$ret=$con->query("select * from tbluser where ID='$userid'");
 $cnt=1;
-while ($row=mysqli_fetch_array($ret)) {
+while ($row=$ret->fetch_assoc()) {
 
 ?>
 							<form role="form" method="post" action="" enctype="multipart/form-data">

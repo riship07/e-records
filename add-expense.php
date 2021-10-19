@@ -1,6 +1,7 @@
 <?php
 session_start();
-error_reporting(0);
+// error_reporting(0);
+
 include('includes/dbconnection.php');
 if (strlen($_SESSION['detsuid'])==0) {
   header('location:logout.php');
@@ -14,11 +15,11 @@ if(isset($_POST['submit']))
      $item=$_POST['item'];
      $costitem=$_POST['costitem'];
 	 $categories=$_POST['categories'];
-	 $query1=mysqli_query($con,"SELECT Cat_id FROM tblcategories WHERE Cat_name='$categories'");
-	 $row=mysqli_fetch_assoc($query1);
+	 $query1=$con->query("SELECT Cat_id FROM tblcategories WHERE Cat_name='$categories'");
+	 $row=$query1->fetch_assoc();
 	 $category=$row['Cat_id'];
-	 
-     $query=mysqli_query($con, "insert into tblexpense(UserId,ExpenseDate,ExpenseItem,ExpenseCost,Categories) value('$userid','$dateexpense','$item','$costitem','$category')");
+	
+     $query=$con->query("CALL iexpense('$userid','$dateexpense','$item','$costitem','$categories')");
 		if($query){
 		echo "<script>alert('Expense has been added');</script>";
 		echo "<script>window.location.href='manage-expense.php'</script>";
@@ -26,6 +27,7 @@ if(isset($_POST['submit']))
 		echo "<script>alert('Something went wrong. Please try again');</script>";
 
    }
+   
   }
   else
     $msg="Please ,Select a category!";

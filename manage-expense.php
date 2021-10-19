@@ -1,6 +1,6 @@
 <?php  
 session_start();
-error_reporting(0);
+// error_reporting(0);
 include('includes/dbconnection.php');
 if (strlen($_SESSION['detsuid'])==0) {
   header('location:logout.php');
@@ -10,7 +10,7 @@ if (strlen($_SESSION['detsuid'])==0) {
 if(isset($_GET['delid']))
 {
 $rowid=intval($_GET['delid']);
-$query=mysqli_query($con,"delete from tblexpense where ID='$rowid'");
+$query=$con->query("delete from tblexpense where ID='$rowid'");
 if($query){
 echo "<script>alert('Record successfully deleted');</script>";
 echo "<script>window.location.href='manage-expense.php'</script>";
@@ -85,9 +85,9 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 			  $results_per_page = 10;  
   
 			   
-			   
-			  $result = mysqli_query($con, "select * from tblexpense where UserId='$userid'");  
-			  $number_of_result = mysqli_num_rows($result);  
+			  
+			  $result =$con->query("select * from tblexpense where UserId='$userid'");  
+			  $number_of_result =$result->num_rows;  
 			
 			  
 			  $number_of_page = ceil($number_of_result / $results_per_page);  
@@ -103,9 +103,9 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
              
 			  
 			    $query="select * from tblexpense where UserId='$userid' LIMIT $page_first_result,$results_per_page ";
-				$ret=mysqli_query($con,$query);  
+				$ret=$con->query($query);  
 				$cnt=1;
-            while ($row=mysqli_fetch_assoc($ret)) {
+            while ($row=$ret->fetch_assoc()) {
 
 ?>
               <tbody>

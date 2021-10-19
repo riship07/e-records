@@ -8,8 +8,8 @@ if(isset($_POST['submit']))
     $mobno=$_POST['mobilenumber'];
     $email=$_POST['email'];
     $password=$_POST['password'];
-	$ret=mysqli_query($con, "select Email from tbluser where Email='$email' ");
-    $result=mysqli_fetch_array($ret);
+	$ret=$con->query("select Email from tbluser where Email='$email' ");
+    $result=$ret->fetch_assoc();
     if($result>0){
 		$msg="This email  associated with another account";
     }
@@ -36,10 +36,10 @@ if(isset($_POST['submit']))
 		}
     
    
-       $query=mysqli_query($con, "INSERT INTO tbluser(FullName, MobileNumber, Email,  Password , Images) VALUE('$fname', '$mobno', '$email', '$password', '$new_img_name' )");
+       $query=$con->query("INSERT INTO tbluser(FullName, MobileNumber, Email,  Password , Images) VALUE('$fname', '$mobno', '$email', '$password', '$new_img_name' )");
 			if ($query) {
-			 $query=mysqli_query($con,"select * from tbluser where  Email='$email' && Password='$password' ");
-			 $ret=mysqli_fetch_array($query);
+			 $query=$con->query("select * from tbluser where  Email='$email' && Password='$password' ");
+			 $ret=$query->fetch_assoc();
 			 if($ret)
 			  $_SESSION['detsuid']=$ret['ID'];
 			 header("location: dashboard.php");

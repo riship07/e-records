@@ -30,8 +30,8 @@ include('includes/dbconnection.php');
 	   $i=1;
 	   
 	  while($i<19){
-	    $query=mysqli_query($con,"SELECT SUM(ExpenseCost) AS total FROM tblexpense WHERE UserId='$userid' && Categories='$i' ");
-		$row=mysqli_fetch_assoc($query);
+	    $query=$con->query("SELECT SUM(ExpenseCost) AS total FROM tblexpense WHERE UserId='$userid' && Categories='$i' ");
+		$row=$query->fetch_assoc();
 		if($row['total']==NULL){
 			array_push($arr,0);
 			$i=$i+1;

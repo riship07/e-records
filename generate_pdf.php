@@ -31,16 +31,16 @@ session_start();
 
 			
 			$userid=$_SESSION['detsuid'];
-			$header = mysqli_query($con, "SHOW columns FROM tblexpense");
-			 $ret=mysqli_query($con,"SELECT * FROM `tblexpense` WHERE ExpenseDate BETWEEN '$fadate' AND '$tadate' && UserId='$userid'");
-			$total=mysqli_num_rows($ret);
+			$header =$con->query("SHOW columns FROM tblexpense");
+			 $ret=$con->query("SELECT * FROM `tblexpense` WHERE ExpenseDate BETWEEN '$fadate' AND '$tadate' && UserId='$userid'");
+			$total=$ret->num_rows;
              $pdf = new PDF();
 		
 			$pdf->AddPage();
 		
 			$pdf->SetFont('Arial','B',12);	
             $pdf->Cell(25,12,'SR NO.',1);	
-			while($row=mysqli_fetch_array($header)){
+			while($row=$header->fetch_array()){
                 if($row[0]=='ID' || $row[0]=='UserId' || $row[0]=='NoteDate' || $row[0]=='Categories')
                    continue;
                 else
@@ -49,7 +49,7 @@ session_start();
 			}
 			$pdf->SetFont('Arial','',12);
             $n=1;
-			while($row=mysqli_fetch_assoc($ret)){
+			while($row=$ret->fetch_assoc()){
                 if($n%10==0){
                     $pdf->AddPage();
                 }

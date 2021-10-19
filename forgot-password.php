@@ -8,8 +8,8 @@ if(isset($_POST['submit']))
     $contactno=$_POST['contactno'];
     $email=$_POST['email'];
 
-        $query=mysqli_query($con,"select ID from tbluser where  Email='$email' and MobileNumber='$contactno' ");
-    $ret=mysqli_fetch_array($query);
+        $query=$con->query("select ID from tbluser where  Email='$email' and MobileNumber='$contactno' ");
+    $ret=$query->fetch_assoc();
     if($ret>0){
       $_SESSION['contactno']=$contactno;
       $_SESSION['email']=$email;

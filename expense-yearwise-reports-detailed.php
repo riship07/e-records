@@ -76,9 +76,9 @@ $rtype=$_POST['requesttype'];
                                         </thead>
  <?php
 $userid=$_SESSION['detsuid'];
-$ret=mysqli_query($con,"SELECT year(ExpenseDate) as rptyear,SUM(ExpenseCost) as totalyear FROM tblexpense  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by year(ExpenseDate)");
+$ret=$con->query("SELECT year(ExpenseDate) as rptyear,SUM(ExpenseCost) as totalyear FROM tblexpense  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by year(ExpenseDate)");
 $cnt=1;
-while ($row=mysqli_fetch_assoc($ret)) {
+while ($row=$ret->fetch_assoc()) {
 
 ?>
               

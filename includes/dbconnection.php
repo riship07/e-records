@@ -1,8 +1,12 @@
 <?php
-$con=mysqli_connect("mysql8", "devuser", "devpass", "test_db");
+$servername = "mysql8";
+$username = "devuser";
+$password = "devpass";
+$dbname = "test_db";
 
-if(mysqli_connect_error()){
-  echo "Connection Fail".mysqli_connect_error();
-}
+$con = new mysqli($servername, $username, $password, $dbname);
 
-  ?>
+
+if ($con->connect_error) {
+  die("Connection failed: " . $con->connect_error);
+}?>

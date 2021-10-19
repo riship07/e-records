@@ -2,27 +2,25 @@
 session_start();
 
 include("includes/dbconnection.php");
-
+include("includes/procedures.php");
 if(isset($_POST['login']))
 {
     $email=$_POST['email'];
     $password=$_POST['password'];
 	
-	$query=mysqli_query($con,"CALL config('$email','$password')");
+	$query=$con->query("CALL config('$email','$password')");
 	
-	$ret=mysqli_fetch_assoc($query);
+	$ret=$query->fetch_assoc();
 		if($ret){
 			$_SESSION['detsuid']=$ret['ID'];
 			$userid=$_SESSION['detsuid'];
 			$date1=date("Y-m-d");
-			mysqli_free_result($query);  
-            mysqli_next_result($con); 
-			$ret =mysqli_query($con,"CALL fix('$userid')");
+			clearStoredResults($con);
+			
+			$ret =$con->query("CALL fix('$userid')");
 			
 		    
-			
-		  
-			while($row=mysqli_fetch_array($ret)){
+			while($row=$ret->fetch_assoc()){
              if($row["date"]<=$date1){
                 
 			   
@@ -32,44 +30,39 @@ if(isset($_POST['login']))
 				    $id=$row["ID"];
 					$date=date_create($row["date"]);
 			        $str=date_format($date,"Y-m-d");
-					mysqli_next_result($con); 
+					clearStoredResults($con);
 					 if($ttype=="expense"){
-						 $query1=mysqli_query($con,"CALL sexpense('$userid','$tname','$tamount','$str','$date1')") ;
-						 if(mysqli_num_rows($query1)==0){
-						   mysqli_next_result($con);
-						   $query=mysqli_query($con, "CALL iexpense('$userid','$str','$tname','$tamount','18')");
+						 $query1=$con->query("CALL sexpense('$userid','$tname','$tamount','$str','$date1')") ;
+						 if($query1->num_rows==0){
+							clearStoredResults($con);
+						    $query=$con->query("CALL iexpense('$userid','$str','$tname','$tamount','18')");
+							clearStoredResults($con);
 						}
-						mysqli_next_result($con);
+						
 					}
 					else{
 						
-						$query1=mysqli_query($con,"CALL sincome('$userid','$tname','$tamount','$str','$date1')") ;
-						if(mysqli_num_rows($query1)==0){
-						  mysqli_next_result($con);
-						  $query=mysqli_query($con, "CALL iincome('$userid','$str','$tname','$tamount')");
+						$query1=$con->query("CALL sincome('$userid','$tname','$tamount','$str','$date1')") ;
+						if($query1->num_rows==0){
+							clearStoredResults($con);
+						    $query=$con->query("CALL iincome('$userid','$str','$tname','$tamount')");
+							clearStoredResults($con);
 						}
-						mysqli_next_result($con);
+						
 					}
 					
 				   
 				}
 			 
 			}	
-		
-				
-	
-			header("location: dashboard.php");
+		   header("location: dashboard.php");
 		}
 		else{
 		$msg="Invalid Details.";
 		
 		}
 	}	
-
-	
-
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -118,4 +111,3 @@ if(isset($_POST['login']))
 	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
-

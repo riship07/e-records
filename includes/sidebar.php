@@ -1,29 +1,32 @@
 <?php
-
+include_once('includes/procedures.php');
 include('includes/dbconnection.php');
 ?>
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
         <div class="profile-sidebar">
             <div class="profile-userpic">
               <?php  
+               
                 $uid=$_SESSION['detsuid'];
-                $query = "CALL simage('$uid')";  
-                $result = mysqli_query($con, $query);  
-                while($row = mysqli_fetch_array($result))  
+                
+                $sql = "CALL simage('$uid')";  
+                $result = $con->query($sql);  
+                while($row = $result->fetch_assoc())  
                 {    
                            
                     echo '<img src="images/'.$row['Images'].'" alt="" /> ';    
                 }  
-                mysqli_next_result($con);
+                clearStoredResults($con);
                 ?> 
             </div>
             <div class="profile-usertitle">
                 <?php
                     $uid=$_SESSION['detsuid'];
-                    $ret=mysqli_query($con,"CALL sfullname('$uid')");
-                    $row=mysqli_fetch_array($ret);
+                    
+                    $ret=$con->query("CALL sfullname('$uid')");
+                    $row=$ret->fetch_assoc();
                     $name=$row['FullName'];
-                    mysqli_next_result($con);
+                    clearStoredResults($con);
                 ?>
 
                 <div class="profile-usertitle-name"><?php echo $name; ?></div>

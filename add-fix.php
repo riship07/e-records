@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+// error_reporting(0);
 include('includes/dbconnection.php');
 if (strlen($_SESSION['detsuid'])==0) {
   header('location:logout.php');
@@ -14,7 +14,7 @@ if(isset($_POST['submit']))
     $Amount=$_POST['amount'];
     $fdate=$_POST['date'];
    
-    $query=mysqli_query($con, "insert into tblauto(UserId,Ttype,Tname,Tamount,date) value('$userid','$Ttype','$Tname','$Amount','$fdate')");
+    $query=$con->query("CALL ifix('$userid','$Ttype','$Tname','$Amount','$fdate')");
 if($query){
     echo "<script>alert('Fix Transaction has been added');</script>";
     

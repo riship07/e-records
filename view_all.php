@@ -97,8 +97,8 @@ include('includes/dbconnection.php');
 
 			if(isset($_GET['date'])){
               $datee=$_GET['date'];
-				$ret=mysqli_query($con,"select * from tblexpense where UserId='$userid' && ExpenseDate='$datee'");
-				$number_of_result = mysqli_num_rows($ret);  
+				$ret=$con->query("select * from tblexpense where UserId='$userid' && ExpenseDate='$datee'");
+				$number_of_result =$ret->num_rows();  
 		   
 			 
 				$number_of_page = ceil($number_of_result / $results_per_page);  
@@ -111,14 +111,14 @@ include('includes/dbconnection.php');
 			  
 			   
 				$page_first_result = ($page-1) * $results_per_page; 
-				$query=mysqli_query($con,"select * from tblexpense where UserId='$userid' && ExpenseDate='$datee' LIMIT $page_first_result,$results_per_page");
+				$query=$con->query("select * from tblexpense where UserId='$userid' && ExpenseDate='$datee' LIMIT $page_first_result,$results_per_page");
 				$cnt=1;
 			}
 			elseif(isset($_GET['month'],$_GET['year'])){
 				$month=$_GET['month'];
 				$year=$_GET['year'];
-				$ret=mysqli_query($con,"select * from tblexpense where UserId='$userid' && month(ExpenseDate)='$month' && year(ExpenseDate)='$year'");
-				$number_of_result = mysqli_num_rows($ret);  
+				$ret=$con->query("select * from tblexpense where UserId='$userid' && month(ExpenseDate)='$month' && year(ExpenseDate)='$year'");
+				$number_of_result =$ret->num_rows();  
 		   
 			 
 				$number_of_page = ceil($number_of_result / $results_per_page);  
@@ -131,13 +131,13 @@ include('includes/dbconnection.php');
 			  
 			   
 				$page_first_result = ($page-1) * $results_per_page;
-				$query=mysqli_query($con,"select * from tblexpense where UserId='$userid' && month(ExpenseDate)='$month' && year(ExpenseDate)='$year' LIMIT $page_first_result,$results_per_page");
+				$query=$con->query("select * from tblexpense where UserId='$userid' && month(ExpenseDate)='$month' && year(ExpenseDate)='$year' LIMIT $page_first_result,$results_per_page");
 				$cnt=1;
 			}
 			else{
 				$year=$_GET['year'];
-				$ret=mysqli_query($con,"select * from tblexpense where UserId='$userid' && year(ExpenseDate)='$year'");
-				$number_of_result = mysqli_num_rows($ret);  
+				$ret=$con->query("select * from tblexpense where UserId='$userid' && year(ExpenseDate)='$year'");
+				$number_of_result =$ret->num_rows();  
 		   
 			 
 				$number_of_page = ceil($number_of_result / $results_per_page);  
@@ -150,10 +150,10 @@ include('includes/dbconnection.php');
 			  
 			   
 				$page_first_result = ($page-1) * $results_per_page; 
-				$query=mysqli_query($con,"select * from tblexpense where UserId='$userid' && year(ExpenseDate)='$year' LIMIT $page_first_result,$results_per_page");
+				$query=$con->query("select * from tblexpense where UserId='$userid' && year(ExpenseDate)='$year' LIMIT $page_first_result,$results_per_page");
 				$cnt=1;
 			}
-            while ($row=mysqli_fetch_array($query)) {
+            while ($row=$query->fetch_assoc()) {
 
 ?>
               <tbody>
