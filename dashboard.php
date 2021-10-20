@@ -126,9 +126,10 @@ echo $sum_weekly_expense;
 $userid=$_SESSION['detsuid'];
  $monthdate=  date("Y-m-d", strtotime("-1 month")); 
 $crrntdte=date("Y-m-d");
-$query3=$con->query("select sum(ExpenseCost)  as monthlyexpense from tblexpense where ((ExpenseDate) between '$monthdate' and '$crrntdte') && (UserId='$userid');");
+$query4=$con->query("CALL monthe('$monthdate','$crrntdte','$userid',@mexpense)");
+$query3=$con->query("SELECT @mexpense");
 $result3=$query3->fetch_assoc();
-$sum_monthly_expense=$result3['monthlyexpense'];
+$sum_monthly_expense=$result3['@mexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Last 30day's Expenses</h4>
@@ -151,9 +152,10 @@ echo $sum_monthly_expense;
 //Yearly Expense
 $userid=$_SESSION['detsuid'];
  $cyear= date("Y");
-$query4=$con->query("select sum(ExpenseCost)  as yearlyexpense from tblexpense where (year(ExpenseDate)='$cyear') && (UserId='$userid');");
+$query3=$con->query("CALL yeare('$cyear','$userid',@yexpense)");
+$query4=$con->query("SELECT @yexpense");
 $result4=$query4->fetch_assoc();
-$sum_yearly_expense=$result4['yearlyexpense'];
+$sum_yearly_expense=$result4['@yexpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Current Year Expenses</h4>
@@ -177,9 +179,10 @@ echo $sum_yearly_expense;
 					<?php
 //total Expense
 $userid=$_SESSION['detsuid'];
-$query5=$con->query("select sum(ExpenseCost)  as totalexpense from tblexpense where UserId='$userid';");
+$query4=$con->query("CALL totale('$userid',@texpense)");
+$query5=$con->query("SELECT @texpense");
 $result5=$query5->fetch_assoc();
-$sum_total_expense=$result5['totalexpense'];
+$sum_total_expense=$result5['@texpense'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Total Expenses</h4>
@@ -202,9 +205,10 @@ echo $sum_total_expense;
 					<?php
 //total Income
 $userid=$_SESSION['detsuid'];
-$query6=$con->query("select sum(IncomeCost)  as totalincome from tblincome where UserId='$userid';");
+$query5=$con->query("CALL totali('$userid',@tincome)");
+$query6=$con->query("SELECT @tincome");
 $result6=$query6->fetch_assoc();
-$sum_total_income=$result6['totalincome'];
+$sum_total_income=$result6['@tincome'];
  ?>
 					<div class="panel-body easypiechart-panel">
 						<h4>Total Income</h4>

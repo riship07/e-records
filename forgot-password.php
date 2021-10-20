@@ -8,7 +8,7 @@ if(isset($_POST['submit']))
     $contactno=$_POST['contactno'];
     $email=$_POST['email'];
 
-        $query=$con->query("select ID from tbluser where  Email='$email' and MobileNumber='$contactno' ");
+        $query=$con->query("CALL fpassword('$email','$contactno') ");
     $ret=$query->fetch_assoc();
     if($ret>0){
       $_SESSION['contactno']=$contactno;

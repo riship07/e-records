@@ -17,7 +17,7 @@ if (strlen($_SESSION['detsuid'])==0) {
 		if (!function_exists('clearStoredResults'))
 		   include('includes/procedures.php');
 		clearStoredResults($con);
-		$ret=$con->query("CALL uuser('$newpassword','$userid')");
+		$ret=$con->query("CALL upassword('$newpassword','$userid')");
 		
 		$msg= "Your password successully changed"; 
 	} else {

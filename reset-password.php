@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+// error_reporting(0);
 include('includes/dbconnection.php');
 
 
@@ -10,7 +10,7 @@ if(isset($_POST['submit']))
     $email=$_SESSION['email'];
     $password=$_POST['newpassword'];
 
-        $query=$con->query("update tbluser set Password='$password'  where  Email='$email' && MobileNumber='$contactno' ");
+        $query=$con->query("CALL resetpsw('$password','$email','$contactno') ");
    if($query)
    {
 echo "<script>alert('Password successfully changed');</script>";

@@ -1,14 +1,15 @@
 <?php 
 session_start();
-error_reporting(0);
+// error_reporting(0);
 include('includes/dbconnection.php');
+include('includes/procedures.php');
 if(isset($_POST['submit']))
   {
     $fname=$_POST['name'];
     $mobno=$_POST['mobilenumber'];
     $email=$_POST['email'];
     $password=$_POST['password'];
-	$ret=$con->query("select Email from tbluser where Email='$email' ");
+	$ret=$con->query("CALL email('$email')");
     $result=$ret->fetch_assoc();
     if($result>0){
 		$msg="This email  associated with another account";
@@ -35,10 +36,11 @@ if(isset($_POST['submit']))
 			}
 		}
     
-   
-       $query=$con->query("INSERT INTO tbluser(FullName, MobileNumber, Email,  Password , Images) VALUE('$fname', '$mobno', '$email', '$password', '$new_img_name' )");
+		clearStoredResults($con);
+       $query=$con->query("CALL iuser('$fname', '$mobno', '$email', '$password', '$new_img_name' )");
 			if ($query) {
-			 $query=$con->query("select * from tbluser where  Email='$email' && Password='$password' ");
+			 clearStoredResults($con);
+			 $query=$con->query("CALL config('$email','$password')");
 			 $ret=$query->fetch_assoc();
 			 if($ret)
 			  $_SESSION['detsuid']=$ret['ID'];

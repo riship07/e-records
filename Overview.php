@@ -2,6 +2,7 @@
 session_start();
 
 include('includes/dbconnection.php');
+include('includes/procedures.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,8 +31,9 @@ include('includes/dbconnection.php');
 	   $i=1;
 	   
 	  while($i<19){
-	    $query=$con->query("SELECT SUM(ExpenseCost) AS total FROM tblexpense WHERE UserId='$userid' && Categories='$i' ");
+	    $query=$con->query("CALL overview('$userid','$i')");
 		$row=$query->fetch_assoc();
+		clearStoredResults($con);
 		if($row['total']==NULL){
 			array_push($arr,0);
 			$i=$i+1;

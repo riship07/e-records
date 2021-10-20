@@ -1,6 +1,6 @@
 <?php
   session_start();
- 
+  header('Cache-Control: max-age=900');
   include('includes/dbconnection.php');
   
   if (strlen($_SESSION['detsuid'])==0) {
@@ -76,7 +76,7 @@ $rtype=$_POST['requesttype'];
                                         </thead>
  <?php
 $userid=$_SESSION['detsuid'];
-$ret=$con->query("SELECT year(ExpenseDate) as rptyear,SUM(ExpenseCost) as totalyear FROM tblexpense  where (ExpenseDate BETWEEN '$fdate' and '$tdate') && (UserId='$userid') group by year(ExpenseDate)");
+$ret=$con->query("CALL yreport('$fdate','$tdate','$userid')");
 $cnt=1;
 while ($row=$ret->fetch_assoc()) {
 

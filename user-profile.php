@@ -2,6 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
+include('includes/procedures.php');
 if (strlen($_SESSION['detsuid'])==0) {
   header('location:logout.php');
   } else{
@@ -27,20 +28,25 @@ if (strlen($_SESSION['detsuid'])==0) {
 		   
 			$time = time();
 			$new_img_name = $time.$img_name;
-			$query=$con->query("SELECT Images FROM `tbluser` WHERE ID='$userid'");
+			clearStoredResults($con);
+			$query=$con->query("CALL simage('$userid')");
 			$row=$query->fetch_assoc();
-			unlink("images/".$row['Images']);
+			if(file_exists("images/".$row['Images'])){
+			  unlink("images/".$row['Images']);
+			}
 		if(move_uploaded_file($tmp_name,"images/".$new_img_name)){
 		
 		} 
 		 
 
+		
+		
 		}
 		
 	}
 	
-
-     $query=$con->query("update tbluser set FullName ='$fullname', MobileNumber='$mobno', Images='$new_img_name' where ID='$userid'");
+	clearStoredResults($con);
+     $query=$con->query("CALL uuser('$fullname','$mobno','$new_img_name','$userid')");
     if ($query) {
 	 $code=7;
      $msg="User profile has been updated.";
@@ -99,7 +105,8 @@ if (strlen($_SESSION['detsuid'])==0) {
 						<div class="col-md-12">
 							 <?php
 $userid=$_SESSION['detsuid'];
-$ret=$con->query("select * from tbluser where ID='$userid'");
+clearStoredResults($con);
+$ret=$con->query("CALL suser('$userid')");
 $cnt=1;
 while ($row=$ret->fetch_assoc()) {
 

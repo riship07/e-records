@@ -32,19 +32,19 @@ session_start();
 			
 			$userid=$_SESSION['detsuid'];
 			$header =$con->query("SHOW columns FROM tblexpense");
-			 $ret=$con->query("SELECT * FROM `tblexpense` WHERE ExpenseDate BETWEEN '$fadate' AND '$tadate' && UserId='$userid'");
+			 $ret=$con->query("CALL pdf('$fadate','$tadate','$userid')");
 			$total=$ret->num_rows;
              $pdf = new PDF();
 		
 			$pdf->AddPage();
 		
 			$pdf->SetFont('Arial','B',12);	
-            $pdf->Cell(25,12,'SR NO.',1);	
+            $pdf->Cell(40,15,'SR NO.',1);	
 			while($row=$header->fetch_array()){
                 if($row[0]=='ID' || $row[0]=='UserId' || $row[0]=='NoteDate' || $row[0]=='Categories')
                    continue;
                 else
-				   $pdf->Cell(40,12,$row[0],1);
+				   $pdf->Cell(50,15,$row[0],1);
 				
 			}
 			$pdf->SetFont('Arial','',12);
@@ -54,10 +54,10 @@ session_start();
                     $pdf->AddPage();
                 }
 					$pdf->Ln();
-				$pdf->Cell(25,12,$n,1);
-			    $pdf->Cell(40,12,$row['ExpenseDate'],1);
-				$pdf->Cell(40,12,$row['ExpenseItem'],1);
-                $pdf->Cell(40,12,$row['ExpenseCost'],1);
+				$pdf->Cell(40,15,$n,1);
+			    $pdf->Cell(50,15,$row['ExpenseDate'],1);
+				$pdf->Cell(50,15,$row['ExpenseItem'],1);
+                $pdf->Cell(50,15,$row['ExpenseCost'],1);
                 $n=$n+1;			
 				}
 			

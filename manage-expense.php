@@ -2,6 +2,7 @@
 session_start();
 // error_reporting(0);
 include('includes/dbconnection.php');
+
 if (strlen($_SESSION['detsuid'])==0) {
   header('location:logout.php');
   } else{
@@ -10,7 +11,7 @@ if (strlen($_SESSION['detsuid'])==0) {
 if(isset($_GET['delid']))
 {
 $rowid=intval($_GET['delid']);
-$query=$con->query("delete from tblexpense where ID='$rowid'");
+$query=$con->query("CALL deletee('$rowid')");
 if($query){
 echo "<script>alert('Record successfully deleted');</script>";
 echo "<script>window.location.href='manage-expense.php'</script>";
@@ -86,7 +87,7 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
   
 			   
 			  
-			  $result =$con->query("select * from tblexpense where UserId='$userid'");  
+			  $result =$con->query("CALL alle('$userid')");  
 			  $number_of_result =$result->num_rows;  
 			
 			  
@@ -101,8 +102,8 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 			 
 			  $page_first_result = ($page-1) * $results_per_page; 
              
-			  
-			    $query="select * from tblexpense where UserId='$userid' LIMIT $page_first_result,$results_per_page ";
+			  clearStoredResults($con);
+			    $query="CALL pagee('$userid','$page_first_result','$results_per_page') ";
 				$ret=$con->query($query);  
 				$cnt=1;
             while ($row=$ret->fetch_assoc()) {
