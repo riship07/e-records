@@ -19,7 +19,7 @@ if(isset($_POST['login']))
 			$date1=date("Y-m-d");
 			clearStoredResults($con);
 			
-			$ret =$con->query("CALL fix('$userid')");
+			$ret =$con->query("CALL fix('$userid','0')");
 			
 		    
 			while($row=$ret->fetch_assoc()){
@@ -39,16 +39,18 @@ if(isset($_POST['login']))
 							clearStoredResults($con);
 						    $query=$con->query("CALL iexpense('$userid','$str','$tname','$tamount','18')");
 							clearStoredResults($con);
+							$sql=$con->query("UPDATE `tblauto` SET statuss=1 Where ID='$id'");
 						}
 						
 					}
 					else{
-						
+						clearStoredResults($con);
 						$query1=$con->query("CALL sincome('$userid','$tname','$tamount','$str','$date1')") ;
 						if($query1->num_rows==0){
 							clearStoredResults($con);
 						    $query=$con->query("CALL iincome('$userid','$str','$tname','$tamount')");
 							clearStoredResults($con);
+							$sql=$con->query("UPDATE `tblauto` SET statuss=1 Where ID='$id'");
 						}
 						
 					}
@@ -91,7 +93,7 @@ if(isset($_POST['login']))
 					<form role="form" action="" method="post" id="" name="login">
 						<fieldset>
 							<div class="form-group">
-								<input class="form-control" placeholder="E-mail" name="email" type="email" autofocus="" required="true">
+								<input class="form-control" placeholder="E-mail" name="email" type="email" autofocus="" autocomplete="off" required="true">
 							</div>
 							<a href="forgot-password.php">Forgot Password?</a>
 							<div class="form-group">
