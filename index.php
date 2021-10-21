@@ -1,8 +1,5 @@
 <?php
 session_start();
-
-
-
 include("includes/dbconnection.php");
 include("includes/procedures.php");
 if(isset($_POST['login']))

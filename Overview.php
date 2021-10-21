@@ -14,7 +14,7 @@ include('includes/procedures.php');
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
 	<link href="css/datepicker3.css" rel="stylesheet">
 	<link href="css/styles.css" rel="stylesheet">
-	<link href="css/bootstrap-chart.css" rel="stylesheet">
+	
 	
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 	
@@ -33,7 +33,7 @@ include('includes/procedures.php');
 	  while($i<19){
 	    $query=$con->query("CALL overview('$userid','$i')");
 		$row=$query->fetch_assoc();
-		clearStoredResults($con);
+		
 		if($row['total']==NULL){
 			array_push($arr,0);
 			$i=$i+1;
@@ -41,6 +41,8 @@ include('includes/procedures.php');
 			array_push($arr,$row['total']);
 			$i=$i+1;
 	  }
+	  clearStoredResults($con);
+	  
 	}
 	?>
 	  
@@ -107,18 +109,12 @@ function drawChart() {
 </script>
 </div>
 </div>
-  	
-		
-	<?php include_once('includes/footer.php');?>
+  	<?php include_once('includes/footer.php');?>
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/chart.min.js"></script>
-	<script src="js/chart-data.js"></script>
-	<script src="js/easypiechart.js"></script>
-	<script src="js/easypiechart-data.js"></script>
+	
+
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script src="js/custom.js"></script>
-	
-		
 </body>
 </html>

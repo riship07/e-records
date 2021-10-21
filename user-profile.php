@@ -116,11 +116,20 @@ while ($row=$ret->fetch_assoc()) {
 									<label>Full Name</label>
 									<input class="form-control" type="text" value="<?php  echo $row['FullName'];?>" name="fullname" required="true">
 								</div>
-								
-								<div class="form-group">
-									<label>Update Your Image</label>
-									<input type="file" class="form-control" name="image" id="image" placeholder="Upload Image">
+								<div class="file-field">
+								<label>Upload Image</label>
+									<div class="mb-4">
+									<img src="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg" width="200" height="120"
+										class="rounded-circle z-depth-1-half avatar-pic" alt="example placeholder avatar">
+									</div>
+									<div class="d-flex justify-content-center">
+									<div class="btn btn-mdb-color btn-rounded float-left">
+										
+										<input type="file" class="form-control" name="image" id="image" placeholder="Upload Image">
+									</div>
+									</div>
 								</div>
+								
 								<div class="form-group">
 									<label>Email</label>
                                     <input type="email" class="form-control" name="email" value="<?php  echo $row['Email'];?>" required="true" readonly="true">
@@ -153,10 +162,7 @@ while ($row=$ret->fetch_assoc()) {
 	
 <script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/chart.min.js"></script>
-	<script src="js/chart-data.js"></script>
-	<script src="js/easypiechart.js"></script>
-	<script src="js/easypiechart-data.js"></script>
+	
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script src="js/custom.js"></script>
 	

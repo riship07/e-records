@@ -14,7 +14,7 @@ include('includes/dbconnection.php');
                 while($row = $result->fetch_assoc())  
                 {    
                            
-                    echo '<img src="images/'.$row['Images'].'" alt="" /> ';    
+                    echo '<a href="../user-profile.php"> <img src="images/'.$row['Images'].'" alt="" /> </a> ';    
                 }  
                 clearStoredResults($con);
                 ?> 

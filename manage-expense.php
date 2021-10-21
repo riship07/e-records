@@ -83,7 +83,7 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
               </thead>
               <?php
 			   $userid=$_SESSION['detsuid'];
-			  $results_per_page = 10;  
+			  $results_per_page = 9;  
   
 			   
 			  
@@ -105,7 +105,11 @@ echo "<script>alert('Something went wrong. Please try again');</script>";
 			  clearStoredResults($con);
 			    $query="CALL pagee('$userid','$page_first_result','$results_per_page') ";
 				$ret=$con->query($query);  
-				$cnt=1;
+				if(isset($_GET['page']) && $_GET['page']>=2)
+				  $cnt=3*pow(3,$_GET['page']-1)+1;
+				else
+				  $cnt=1;
+				
             while ($row=$ret->fetch_assoc()) {
 
 ?>
@@ -149,10 +153,7 @@ $cnt=$cnt+1;
 	
 <script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/chart.min.js"></script>
-	<script src="js/chart-data.js"></script>
-	<script src="js/easypiechart.js"></script>
-	<script src="js/easypiechart-data.js"></script>
+
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script src="js/custom.js"></script>
 	

@@ -47,18 +47,37 @@ include('includes/dbconnection.php');
 		<div class="row">
 			<div class="col-lg-12">
 			        <?php
-					 if(isset($_GET['date'])){
-					    $dat=$_GET['date'];
+                     
+
+					 if(isset($_GET['date']) || isset($_SESSION['date'])){
+						 if(isset($_SESSION['date']))
+						   $dat=$_SESSION['date'];
+						else{
+							$dat=$_GET['date'];
+							$_SESSION['date']=$_GET['date'];
+						}
                         echo "<div class='panel-heading'>Expenses of  => $dat</div>";
 					 }
-					 elseif(isset($_GET['month'],$_GET['year'])){
+					 elseif(isset($_GET['month'],$_GET['year']) || isset($_SESSION['month'],$_SESSION['year'])){
+						 if(isset($_SESSION['month'],$_SESSION['year'])){
+							$mont=$_SESSION['month'];
+							$yar=$_SESSION['year'];
+   
+						 }else{
 						 $mont=$_GET['month'];
 						 $yar=$_GET['year'];
-
+						 $_SESSION['month']=$_GET['month'];
+						 $_SESSION['year']=$_GET['year'];
+						 }
 						 echo "<div class='panel-heading'>Expenses of   => $mont - $yar</div>";
 					 }
 					 else{
+						 if(isset($_SESSION['year']))
+						   $yar=$_SESSION['year'];
+						else{
 						 $yar=$_GET['year'];
+						 $_SESSION['year']=$_GET['year'];
+						}
 						 echo "<div class='panel-heading'>Expense of   => $yar</div>";
 					 }
 					   ?>
@@ -86,38 +105,55 @@ include('includes/dbconnection.php');
               <?php
               $userid=$_SESSION['detsuid'];
 			  
-			  $userid=$_SESSION['detsuid'];
+			  
 			 $results_per_page = 9;  
  
-			  
-			  
-			  
-			
-
-
-			if(isset($_GET['date'])){
-              $datee=$_GET['date'];
+			 if (!isset ($_GET['page']) ) {  
+				$page = 1;  
+			} else {  
+				$page = $_GET['page']; 
+				
+			}  
+		
+			 if(isset($_GET['date']) || isset($_SESSION['date'])){
+				if(isset($_SESSION['date'])){
+				$datee=$_SESSION['date'];
+                $cnt=3*pow(3,$_GET['page']-1)+1;}
+				else{
+					$datee=$_GET['date'];
+					$_SESSION['date']=$_GET['date'];
+					$cnt=1;
+					
+				}
+              
 				$ret=$con->query("CALL dview('$userid','$datee')");
 				$number_of_result =$ret->num_rows;  
 		   
 			 
 				$number_of_page = ceil($number_of_result / $results_per_page);  
 			   
-				if (!isset ($_GET['page']) ) {  
-					$page = 1;  
-				} else {  
-					$page = $_GET['page'];  
-				}  
-			  
+				
 			   
 				$page_first_result = ($page-1) * $results_per_page; 
 				clearStoredResults($con);
 				$query=$con->query("CALL deview('$userid','$datee','$page_first_result','$results_per_page')");
-				$cnt=1;
+				
 			}
-			elseif(isset($_GET['month'],$_GET['year'])){
-				$month=$_GET['month'];
-				$year=$_GET['year'];
+			elseif(isset($_GET['month'],$_GET['year']) || isset($_SESSION['month'],$_SESSION['year'])){
+				if(isset($_SESSION['month'],$_SESSION['year'])){
+					$month=$_SESSION['month'];
+				    $year=$_SESSION['year'];
+					$cnt=3*pow(3,$_GET['page']-1)+1;
+					
+				}else{
+					$month=$_GET['month'];
+					$year=$_GET['year'];
+					$_SESSION['month']=$_GET['month'];
+					$_SESSION['year']=$_GET['year'];
+					$cnt=1;
+					
+				}
+
 				clearStoredResults($con);
 				$ret=$con->query("CALL mview('$userid','$month','$year')");
 				$number_of_result =$ret->num_rows;  
@@ -125,39 +161,40 @@ include('includes/dbconnection.php');
 			 
 				$number_of_page = ceil($number_of_result / $results_per_page);  
 			   
-				if (!isset ($_GET['page']) ) {  
-					$page = 1;  
-				} else {  
-					$page = $_GET['page'];  
-				}  
-			  
-			   
+				
 				$page_first_result = ($page-1) * $results_per_page;
 				clearStoredResults($con);
 				$query=$con->query("CALL meview('$userid','$month','$year','$page_first_result','$results_per_page')");
-				$cnt=1;
+				
 			}
 			else{
+				if(isset($_SESSION['year'])){
+				$year=$_SESSION['year'];
+				$cnt=3*pow(3,$_GET['page']-1)+1;}
+				else{
 				$year=$_GET['year'];
+				$_SESSION['year']=$_GET['year'];
+				$cnt=1;
+				}
+				
 				clearStoredResults($con);
 				$ret=$con->query("CALL yview('$userid','$year')");
 				$number_of_result =$ret->num_rows;  
 		   
-			 
+				
+				
 				$number_of_page = ceil($number_of_result / $results_per_page);  
-			   
-				if (!isset ($_GET['page']) ) {  
-					$page = 1;  
-				} else {  
-					$page = $_GET['page'];  
-				}  
-			  
-			   
+			
+			    
 				$page_first_result = ($page-1) * $results_per_page; 
 				clearStoredResults($con);
-				$query=$con->query("CALL yeview('$userid','$year','$page_first_result','$results_per_page'");
-				$cnt=1;
+				// $query=$con->query("CALL yeview('$userid','$year','$page_first_result','$results_per_page'");
+				$query=$con->query("select * from tblexpense where UserId='$userid' && year(ExpenseDate)='$year' LIMIT $page_first_result,$results_per_page");
+				
 			}
+			if($_GET['page']==1 || $_GET['page']==NULL){
+				$cnt=1;
+			 }
             while ($row=$query->fetch_assoc()) {
 
 ?>
