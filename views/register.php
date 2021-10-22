@@ -1,8 +1,8 @@
 <?php 
 session_start();
 // error_reporting(0);
-include('includes/dbconnection.php');
-include('includes/procedures.php');
+include('../includes/dbconnection.php');
+include('../includes/procedures.php');
 if(isset($_POST['submit']))
   {
     $fname=$_POST['name'];
@@ -29,7 +29,7 @@ if(isset($_POST['submit']))
 			   
 				$time = time();
 			    $new_img_name = $time.$img_name;
-			if(move_uploaded_file($tmp_name,"images/".$new_img_name)){
+			if(move_uploaded_file($tmp_name,"../images/".$new_img_name)){
 				$msg="image uploaded";
 			} 
 			
@@ -60,9 +60,9 @@ if(isset($_POST['submit']))
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Daily Expense Tracker - Signup</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/datepicker3.css" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet">
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/datepicker3.css" rel="stylesheet">
+	<link href="../css/styles.css" rel="stylesheet">
 	<script type="text/javascript">
 function checkpass()
 {
@@ -123,7 +123,7 @@ return true;
 	</div><!-- /.row -->	
 	
 
-<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+<script src="../js/jquery-1.11.1.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
 </body>
 </html>

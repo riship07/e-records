@@ -6,7 +6,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span></button>
-                <a class="navbar-brand" href="dashboard.php"><span>Daily Expense Tracker</span></a>
+                <a class="navbar-brand" href="../views/dashboard.php"><span>Daily Expense Tracker</span></a>
                 
             </div>
             

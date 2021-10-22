@@ -1,10 +1,10 @@
 <?php
 session_start();
-include('includes/dbconnection.php');
+include('../includes/dbconnection.php');
 
 // error_reporting(0);
 if (strlen($_SESSION['detsuid'])==0) {
-  header('location:logout.php');
+  header('location:../controller/logout.php');
   } else{
 	if(isset($_POST['submit']))
 	{
@@ -15,7 +15,7 @@ if (strlen($_SESSION['detsuid'])==0) {
 		$row=$query->fetch_assoc();
 	if($row>0){
 		if (!function_exists('clearStoredResults'))
-		   include('includes/procedures.php');
+		   include('../includes/procedures.php');
 		clearStoredResults($con);
 		$ret=$con->query("CALL upassword('$newpassword','$userid')");
 		
@@ -38,10 +38,10 @@ if (strlen($_SESSION['detsuid'])==0) {
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Daily Expense Tracker || Change Password</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-	<link href="css/datepicker3.css" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet">
+	<link href="../css/datepicker3.css" rel="stylesheet">
+	<link href="../css/styles.css" rel="stylesheet">
 	
 	<!--Custom Font-->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
@@ -60,8 +60,8 @@ return true;
 </script>
 </head>
 <body>
-	<?php include('includes/header.php');?>
-	<?php include('includes/sidebar.php');?>
+	<?php include('../includes/header.php');?>
+	<?php include('../includes/sidebar.php');?>
 		
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
@@ -123,15 +123,15 @@ $userid=$_SESSION['detsuid'];
 					</div>
 				</div><!-- /.panel-->
 			</div><!-- /.col-->
-			<?php include_once('includes/footer.php');?>
+			<?php include_once('../includes/footer.php');?>
 		</div><!-- /.row -->
 	</div><!--/.main-->
 	
-<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+<script src="../js/jquery-1.11.1.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
 
-	<script src="js/bootstrap-datepicker.js"></script>
-	<script src="js/custom.js"></script>
+	<script src="../js/bootstrap-datepicker.js"></script>
+	<script src="../js/custom.js"></script>
 	
 </body>
 </html>

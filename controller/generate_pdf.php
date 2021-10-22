@@ -1,8 +1,8 @@
 <?php
 session_start();
   
-  include('includes/dbconnection.php');
-  include_once('fpdf181/fpdf.php');
+  include('../includes/dbconnection.php');
+  include_once('../fpdf181/fpdf.php');
   if (strlen($_SESSION['detsuid'])==0) {
 	header('location:logout.php');
 	}else{

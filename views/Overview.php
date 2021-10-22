@@ -1,8 +1,11 @@
 <?php
 session_start();
 
-include('includes/dbconnection.php');
-include('includes/procedures.php');
+include('../includes/dbconnection.php');
+include('../includes/procedures.php');
+if (strlen($_SESSION['detsuid'])==0) {
+	header('location:../controller/logout.php');
+	} else{
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,21 +13,21 @@ include('includes/procedures.php');
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Daily Expense Tracker - Overview</title>
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
-	<link href="css/datepicker3.css" rel="stylesheet">
-	<link href="css/styles.css" rel="stylesheet">
+	<link href="../css/datepicker3.css" rel="stylesheet">
+	<link href="../css/styles.css" rel="stylesheet">
 	
 	
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 	
-	<script src="js/html5shiv.js"></script>
-	<script src="js/respond.min.js"></script>
+	<script src="../js/html5shiv.js"></script>
+	<script src="../js/respond.min.js"></script>
 	
 </head>
 <body>
-	<?php include_once('includes/header.php');?>
-	<?php include_once('includes/sidebar.php');?>
+	<?php include_once('../includes/header.php');?>
+	<?php include_once('../includes/sidebar.php');?>
     <?php
        $userid=$_SESSION['detsuid'];
 	   $arr=array();
@@ -109,12 +112,13 @@ function drawChart() {
 </script>
 </div>
 </div>
-  	<?php include_once('includes/footer.php');?>
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+  	<?php include_once('../includes/footer.php');?>
+	<script src="../js/jquery-1.11.1.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
 	
 
-	<script src="js/bootstrap-datepicker.js"></script>
-	<script src="js/custom.js"></script>
+	<script src="../js/bootstrap-datepicker.js"></script>
+	<script src="../js/custom.js"></script>
 </body>
 </html>
+<?php } ?>
